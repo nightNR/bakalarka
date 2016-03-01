@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@PubLeashBundle/Resources/config/services.yml" }
+    - { resource: "@UserBundle/Resources/config/services.yml" }
     - { resource: "@PubLeashBundle/Resources/config/parameters.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
@@ -12,7 +13,7 @@ parameters:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -74,3 +75,25 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: PubLeashBundle\Entity\User
+
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        lessphp:
+                file: %kernel.root_dir%/../vendor/leafo/lessphp/lessc.inc.php
+                apply_to: \.less$
+        cssrewrite: ~
+    assets:
+            bootstrap_css:
+                inputs:
+                    - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.css'
+                    - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap-theme.css'
+                filters:
+                    - lessphp
+                    - cssrewrite
+                output: 'css/bootstrap.css'
+            bootstrap_js:
+                inputs:
+                    - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.js'
+                output: 'js/bootstrap.js'

@@ -1,0 +1,39 @@
+{#{{ dump() }}#}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>"PubLeash"</title>
+    <meta name="description" content="The HTML5 Herald">
+    <meta name="author" content="Night">
+    {% block javascript %}
+        {% javascripts '@PubLeashBundle/Resources/JavaScript/*'
+        '@bootstrap_js'
+        %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock %}
+    {% block stylesheets %}
+        {% stylesheets '@bootstrap_css'
+        '@PubLeashBundle/Resources/Css/*'
+        %}
+            <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}">
+        {% endstylesheets %}
+    {% endblock %}
+
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+{% block body %}
+<div class="container">
+    <div class="row">
+        {{ include("PubLeashBundle:Default:navigation.html.twig") }}
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

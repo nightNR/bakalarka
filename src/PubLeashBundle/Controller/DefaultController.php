@@ -16,7 +16,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return [];
+        return $this->render("PubLeashBundle:Default:layout.html.twig");
     }
 
     /**

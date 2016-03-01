@@ -1,0 +1,9 @@
+{% extends "PubLeashBundle:Default:layout.html.twig" %}
+
+{% block body %}
+    <div class="container">
+        <div class="well center-block" style="max-width: 400px">
+            {% block fos_user_content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}
