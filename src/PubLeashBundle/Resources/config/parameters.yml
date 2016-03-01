@@ -1,9 +1,2 @@
-services:
-#    publeash.example:
-#        class:     PubLeashBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
-#        calls:
-#            - [setService, ["@service_id"]]
-#        tags:
-#            - { name: twig.extension }
-#            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+parameters:
+    ahoj: svet
