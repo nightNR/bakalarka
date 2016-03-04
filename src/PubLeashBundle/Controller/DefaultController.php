@@ -36,7 +36,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/publication/{publication_id}")
+     * @Route("/publication/{publicationId}")
      */
     public function publicationShowAction($publicationId)
     {
