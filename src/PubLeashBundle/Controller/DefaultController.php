@@ -26,4 +26,21 @@ class DefaultController extends Controller
     {
         return new Response();
     }
+
+    /**
+     * @Route("/publication")
+     */
+    public function publicationAction()
+    {
+        return new Response();
+    }
+
+    /**
+     * @Route("/publication/{publication_id}")
+     */
+    public function publicationShowAction($publicationId)
+    {
+        var_dump($publicationId);
+        return new Response();
+    }
 }
