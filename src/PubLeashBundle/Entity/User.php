@@ -30,4 +30,190 @@ class User extends FOSUser
      */
     protected $id;
 
+    /**
+     * @var string
+     * @ORM\Column(name="first_name", type="string")
+     */
+    protected $firstName;
+
+    /**
+     * @var string
+     * @ORM\Column(name="last_name", type="string")
+     */
+    protected $lastName;
+
+    /**
+     * @var string
+     * @ORM\Column(name="address", type="string")
+     */
+    protected $address;
+
+    /**
+     * @var int
+     * @ORM\ManyToOne(targetEntity="PubLeashBundle\Entity\CityEnum", inversedBy="users")
+     */
+    protected $city;
+
+    /**
+     * @var int
+     * @ORM\ManyToOne(targetEntity="PubLeashBundle\Entity\CountryEnum", inversedBy="users")
+     */
+    protected $country;
+
+    /**
+     * @var int
+     * @ORM\ManyToOne(targetEntity="PubLeashBundle\Entity\LanguageEnum", inversedBy="users")
+     */
+    protected $language;
+
+    /**
+     * @var
+     * @ORM\ManyToMany(targetEntity="PubLeashBundle\Entity\Publication", inversedBy="authors")
+     */
+    protected $publications;
+
+
+    /**
+     * Set firstName
+     *
+     * @param string $firstName
+     *
+     * @return User
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * Get firstName
+     *
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * Set lastName
+     *
+     * @param string $lastName
+     *
+     * @return User
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return User
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set city
+     *
+     * @param \PubLeashBundle\Entity\CityEnum $city
+     *
+     * @return User
+     */
+    public function setCity(\PubLeashBundle\Entity\CityEnum $city = null)
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * Get city
+     *
+     * @return \PubLeashBundle\Entity\CityEnum
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * Set country
+     *
+     * @param \PubLeashBundle\Entity\CountryEnum $country
+     *
+     * @return User
+     */
+    public function setCountry(\PubLeashBundle\Entity\CountryEnum $country = null)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return \PubLeashBundle\Entity\CountryEnum
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set language
+     *
+     * @param \PubLeashBundle\Entity\LanguageEnum $language
+     *
+     * @return User
+     */
+    public function setLanguage(\PubLeashBundle\Entity\LanguageEnum $language = null)
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    /**
+     * Get language
+     *
+     * @return \PubLeashBundle\Entity\LanguageEnum
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
 }
