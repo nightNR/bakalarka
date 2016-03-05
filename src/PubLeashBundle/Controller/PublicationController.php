@@ -19,6 +19,7 @@ class PublicationController extends Controller
 {
     /**
      * @Route("/publication/list/{page}", defaults={"page": "1"}, requirements={"page": "\d+"})
+     * @Method("GET")
      */
     public function publicationAction($page)
     {
@@ -28,6 +29,7 @@ class PublicationController extends Controller
 
     /**
      * @Route("/publication/{publicationId}/read/chapter/list/{page}", defaults={"page": "1"}, requirements={"publicationId": "\d+", "page": "\d+"})
+     * @Method("GET")
      */
     public function showPublicationChaptersAction($publicationId, $page)
     {
@@ -36,6 +38,7 @@ class PublicationController extends Controller
 
     /**
      * @Route("/publication/{publicationId}/read/chapter/{chapterId}", defaults={"chapterId": "1"}, requirements={"publicationId": "\d+", "chapterId": "\d+"})
+     * @Method("GET")
      */
     public function showPublicationChapterAction($publicationId, $chapterId)
     {
@@ -44,6 +47,7 @@ class PublicationController extends Controller
 
     /**
      * @Route("/publication/read/{publicationId}")
+     * @Method("get")
      */
     public function showPublicationAction($publicationId)
     {
@@ -65,6 +69,7 @@ class PublicationController extends Controller
 
     /**
      * @Route("/publication/{publicationId}/reviews/{page}", defaults={"page": "1"}, requirements={"publicationId": "\d+", "page": "\d+"})
+     * @Method("GET")
      * @param $publicationId
      * @return Response
      */
@@ -86,6 +91,7 @@ class PublicationController extends Controller
 
     /**
      * @Route(/publication/add)
+     * @Method("GET")
      * @return Response
      */
     public function addPublicationAction()
@@ -94,7 +100,8 @@ class PublicationController extends Controller
     }
 
     /**
-     * @Route("/publication/{publicationId}/chapter/add")
+     * @Route("/publication/add/{publicationId}/chapter")
+     * @Method("GET")
      * @param $publicationId
      */
     public function addChapter($publicationId)
