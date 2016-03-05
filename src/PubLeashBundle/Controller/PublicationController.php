@@ -90,7 +90,7 @@ class PublicationController extends Controller
     }
 
     /**
-     * @Route(/publication/add)
+     * @Route("/publication/add/")
      * @Method("GET")
      * @return Response
      */
