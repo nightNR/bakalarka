@@ -24,7 +24,8 @@
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "symfony/assetic-bundle": "^2.7",
         "leafo/lessphp": "^0.5.0",
-        "twbs/bootstrap": "^3.3"
+        "twbs/bootstrap": "^3.3",
+        "geoip2/geoip2": "~2.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

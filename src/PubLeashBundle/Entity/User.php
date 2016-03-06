@@ -49,14 +49,14 @@ class User extends FOSUser
     protected $address;
 
     /**
-     * @var int
-     * @ORM\ManyToOne(targetEntity="PubLeashBundle\Entity\CityEnum", inversedBy="users")
+     * @var string
+     * @ORM\Column(name="city", type="string")
      */
     protected $city;
 
     /**
      * @var int
-     * @ORM\ManyToOne(targetEntity="PubLeashBundle\Entity\CountryEnum", inversedBy="users")
+     * @ORM\Column(name="country", type="string", length=6)
      */
     protected $country;
 
@@ -152,7 +152,7 @@ class User extends FOSUser
      *
      * @return User
      */
-    public function setCity(\PubLeashBundle\Entity\CityEnum $city = null)
+    public function setCity($city = null)
     {
         $this->city = $city;
 
@@ -176,7 +176,7 @@ class User extends FOSUser
      *
      * @return User
      */
-    public function setCountry(\PubLeashBundle\Entity\CountryEnum $country = null)
+    public function setCountry($country = null)
     {
         $this->country = $country;
 

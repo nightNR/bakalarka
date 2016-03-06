@@ -1,4 +1,7 @@
-services:
 #    pub_leash.example:
 #        class: PubLeashBundle\Example
 #        arguments: ["@service_id", "plain_value", %parameter%]
+services:
+  geo_ip:
+    class: PubLeashBundle\Service\GeoIP
+    arguments: ["%kernel.root_dir%/../src/PubLeashBundle/Resources/geoip-db/GeoLite2-Country.mmdb", ["en"]]

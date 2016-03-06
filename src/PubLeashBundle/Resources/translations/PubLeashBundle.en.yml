@@ -1,0 +1,6 @@
+user:
+  name: 'First Name'
+  surname: 'Last Name'
+  address: 'Address'
+  city: 'City'
+  country: 'Country'
