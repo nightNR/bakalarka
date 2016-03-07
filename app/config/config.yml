@@ -131,3 +131,10 @@ ewz_recaptcha:
     public_key:  '6LewGxoTAAAAAIxPJAzMOOHYmKN_wsk-Embtzmmq'
     private_key: '6LewGxoTAAAAALExCdi4h6434w3WEe6ejCYhWlO0'
     locale_key:  %kernel.default_locale%
+
+ornicar_gravatar:
+  rating: g
+  size: 80
+  default: mm
+
+white_october_breadcrumbs: ~

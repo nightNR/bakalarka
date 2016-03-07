@@ -32,7 +32,7 @@ body {
 .navbar-custom .navbar-nav > li > .dropdown-menu > li > a:hover,
 .navbar-custom .navbar-nav > li > .dropdown-menu > li > a:focus {
     color: #c7c7c7;
-    background-color: #474747;
+    background: #474747 linear-gradient(to bottom, #393939 0%, #474747 100%);
 }
 .navbar-custom .navbar-nav > li > .dropdown-menu > li > .divider {
     background-color: #474747;

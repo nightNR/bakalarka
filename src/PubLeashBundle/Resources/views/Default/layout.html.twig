@@ -9,16 +9,14 @@
     <meta name="author" content="Night">
     {% block javascript %}
         {% javascripts '@PubLeashBundle/Resources/JavaScript/*'
-        '@bootstrap_js'
-        %}
+        '@bootstrap_js' %}
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
     {% endblock %}
     {% block stylesheets %}
         {% stylesheets '@bootstrap_css'
-        '@PubLeashBundle/Resources/Css/*'
-        %}
-            <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}">
+        '@PubLeashBundle/Resources/Css/*' %}
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}">
         {% endstylesheets %}
     {% endblock %}
 
@@ -29,10 +27,19 @@
 
 <body>
 {% block navigation %}
-            {{ include("PubLeashBundle:Default:navigation.html.twig") }}
+    {{ include("PubLeashBundle:Default:navigation.html.twig") }}
+{% endblock %}
+{% block breadcrumbs %}
+    <div class="container-fluid">
+        {{ wo_render_breadcrumbs({separator: ''}) }}
+    </div>
 {% endblock %}
 {% block body %}
 {% endblock %}
-{{ dump(app) }}
+<div class="container">
+    <div class="col-lg-5">
+        {{ dump(app) }}
+    </div>
+</div>
 </body>
 </html>

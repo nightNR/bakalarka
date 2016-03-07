@@ -26,7 +26,9 @@
         "leafo/lessphp": "^0.5.0",
         "twbs/bootstrap": "^3.3",
         "geoip2/geoip2": "~2.0",
-        "excelwebzone/recaptcha-bundle": "^1.4"
+        "excelwebzone/recaptcha-bundle": "^1.4",
+        "ornicar/gravatar-bundle": "^1.1",
+        "whiteoctober/breadcrumbs-bundle": "^1.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

@@ -9,7 +9,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">PubLeash</a>
+            <a class="navbar-brand" href="{{ path('publeash_default_index') }}">PubLeash</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -24,13 +24,9 @@
                     {#<li><a href="{{ path('fos_user_profile_show') }}">Profile</a></li>#}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">{{ app.user.username }}</a>
+                           aria-expanded="false"><img src="{{ gravatar(app.user.email, 30, 'g') }}" style="padding-right: 10px; margin-top: -10px; margin-bottom: -10px" />{{ app.user.username }}</a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
+                            <li><a href="{{ path('fos_user_profile_show') }}">Profile</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
                         </ul>
@@ -50,7 +46,6 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-
 <!-- Modal -->
 <div class="modal fade" id="user_modal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" style="padding-top: 150px">
     {#<div class="modal-body">#}
