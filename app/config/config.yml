@@ -76,6 +76,9 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: PubLeashBundle\Entity\User
+    from_email:
+                address:  'registrator@publeash.nightnr.com'
+                sender_name:  'PubLeash - Registrator'
     registration:
       confirmation:
         enabled: true
