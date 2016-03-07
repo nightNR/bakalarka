@@ -15,4 +15,7 @@
 /vendor/
 /web/bundles/
 /web/app_dev.php
+/web/css
+/web/js
+/web/fonts
 /.idea/
