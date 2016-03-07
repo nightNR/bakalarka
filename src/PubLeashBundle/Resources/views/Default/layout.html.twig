@@ -28,13 +28,9 @@
 </head>
 
 <body>
-{#{% block navigation %}#}
-    {#<div class="container" style="width: 100%">#}
-        {#<div class="row">#}
+{% block navigation %}
             {{ include("PubLeashBundle:Default:navigation.html.twig") }}
-        {#</div>#}
-    {#</div>#}
-{#{% endblock %}#}
+{% endblock %}
 {% block body %}
 {% endblock %}
 </body>

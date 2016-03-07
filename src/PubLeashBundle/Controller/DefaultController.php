@@ -23,9 +23,9 @@ class DefaultController extends Controller
          */
         $geoIp = $this->get('geoip');
         try {
-            dump($geoIp->getCountry());
+//            dump($geoIp->getCountry());
         }catch(AddressNotFoundException $e){
-            dump($e);
+//            dump($e);
         }
         return $this->render("PubLeashBundle:Default:layout.html.twig");
     }

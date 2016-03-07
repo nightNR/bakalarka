@@ -106,6 +106,26 @@ assetic:
                 inputs:
                     - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.js'
                 output: 'js/bootstrap.js'
+            bootstrap_fonts_woff:
+                        inputs:
+                            - '%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.woff'
+                        output: fonts/glyphicons-halflings-regular.woff
+            bootstrap_fonts_woff2:
+                                    inputs:
+                                        - '%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.woff2'
+                                    output: fonts/glyphicons-halflings-regular.woff
+            bootstrap_fonts_ttf:
+                        inputs:
+                            - '%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.ttf'
+                        output: fonts/glyphicons-halflings-regular.ttf
+            bootstrap_fonts_svg:
+                        inputs:
+                            - '%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.svg'
+                        output: fonts/glyphicons-halflings-regular.svg
+            bootstrap_fonts_eot:
+                        inputs:
+                            - '%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.eot'
+                        output: fonts/glyphicons-halflings-regular.eot
 
 ewz_recaptcha:
     public_key:  '6LewGxoTAAAAAIxPJAzMOOHYmKN_wsk-Embtzmmq'

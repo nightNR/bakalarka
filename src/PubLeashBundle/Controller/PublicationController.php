@@ -23,7 +23,7 @@ class PublicationController extends Controller
      */
     public function publicationAction($page)
     {
-        var_dump($page);
+//        var_dump($page);
         return new Response();
     }
 
@@ -51,7 +51,7 @@ class PublicationController extends Controller
      */
     public function showPublicationAction($publicationId)
     {
-        var_dump($publicationId);
+//        var_dump($publicationId);
         return new Response();
     }
 

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-custom navbar-fixed-top">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -9,7 +9,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Brand</a>
+            <a class="navbar-brand" href="#">PubLeash</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -31,20 +31,22 @@
                     </ul>
                 </li>
             </ul>
-            <form class="navbar-form navbar-left" role="search">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default">Submit</button>
-            </form>
             <ul class="nav navbar-nav navbar-right">
                 {% if app.user is not empty %}
-                    <li><a href="{{ path('fos_user_profile_show') }}">Profile</a></li>
+                    {#<li><a href="{{ path('fos_user_profile_show') }}">Profile</a></li>#}
                     <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
                 {% else %}
                     <li><a href="#" data-target="#user_modal" data-toggle="modal">Login</a></li>
                 {% endif %}
             </ul>
+            <form class="navbar-form navbar-right" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="false"></span></button>
+                </span>
+                </div><!-- /input-group -->
+            </form>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
