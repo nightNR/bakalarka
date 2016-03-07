@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
 
             new FOS\UserBundle\FOSUserBundle(),
+            new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
 
             new PubLeashBundle\PubLeashBundle(),
             new UserBundle\UserBundle(),

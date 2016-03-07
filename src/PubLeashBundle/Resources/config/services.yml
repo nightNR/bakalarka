@@ -2,6 +2,11 @@
 #        class: PubLeashBundle\Example
 #        arguments: ["@service_id", "plain_value", %parameter%]
 services:
-  geo_ip:
-    class: PubLeashBundle\Service\GeoIP
+  geo_reader:
+    class: GeoIp2\Database\Reader
     arguments: ["%kernel.root_dir%/../src/PubLeashBundle/Resources/geoip-db/GeoLite2-Country.mmdb", ["en"]]
+
+  geoip:
+    class: PubLeashBundle\Service\GeoIP
+#    scope: request
+    autowire: true

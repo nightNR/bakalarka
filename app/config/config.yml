@@ -101,3 +101,8 @@ assetic:
                 inputs:
                     - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.js'
                 output: 'js/bootstrap.js'
+
+ewz_recaptcha:
+    public_key:  '6LewGxoTAAAAAIxPJAzMOOHYmKN_wsk-Embtzmmq'
+    private_key: '6LewGxoTAAAAALExCdi4h6434w3WEe6ejCYhWlO0'
+    locale_key:  %kernel.default_locale%

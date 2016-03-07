@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
-use PubLeashBundle\Service\GeoIpResolver;
+use PubLeashBundle\Service\GeoIP;
 
 class DefaultController extends Controller
 {
@@ -19,12 +19,11 @@ class DefaultController extends Controller
     public function indexAction()
     {
         /**
-         * @var GeoIpResolver $geoIp
+         * @var GeoIP $geoIp
          */
-        $geoIp = $this->get('geo_ip');
-        $geoIp->setClientIP($this->container->get('request_stack')->getCurrentRequest()->getClientIp());
+        $geoIp = $this->get('geoip');
         try {
-            dump($geoIp->country());
+            dump($geoIp->getCountry());
         }catch(AddressNotFoundException $e){
             dump($e);
         }

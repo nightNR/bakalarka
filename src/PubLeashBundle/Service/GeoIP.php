@@ -1,5 +1,7 @@
 <?php
 namespace PubLeashBundle\Service;
+use GeoIp2\Database\Reader;
+use Symfony\Component\HttpFoundation\RequestStack as Request;
 
 
 /**
@@ -8,27 +10,37 @@ namespace PubLeashBundle\Service;
  * Date: 3/6/16
  * Time: 3:01 PM
  */
-class GeoIP extends \GeoIp2\Database\Reader
+class GeoIP
 {
-    protected $ip;
+    /**
+     * @var Reader
+     */
+    protected $reader;
 
-    public function __construct($filename, array $locales)
+    /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * GeoIP constructor.
+     * @param Reader $reader
+     * @param Request $request
+     */
+    public function __construct(Reader $reader, Request $request)
     {
-        parent::__construct($filename, $locales);
+        $this->reader = $reader;
+        $this->request = $request;
     }
 
-    public function setClientIP($clientIp)
+    public function getCountry()
     {
-        $this->ip = $clientIp;
+        $ip = $this->request->getMasterRequest()->getClientIp();
+        return $this->reader->country($ip);
     }
 
-    public function country($ipAddress = null)
+    public function getCity()
     {
-        return parent::country($ipAddress?:$this->ip);
-    }
-
-    public function city($ipAddress = null)
-    {
-        return parent::city($ipAddress?:$this->ip);
+        return $this->reader->city($this->request->getMasterRequest()->getClientIp());
     }
 }

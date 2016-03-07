@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3dd4d536a6cb4ba404ca552fda322913",
-    "content-hash": "1f2d89f1951476dbd1a066f6854a2b31",
+    "hash": "e8b967c893f5606143de01a53921d254",
+    "content-hash": "374ad3bcba491699a35141cfd747fed3",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -771,6 +771,47 @@
                 "orm"
             ],
             "time": "2016-01-05 21:34:58"
+        },
+        {
+            "name": "excelwebzone/recaptcha-bundle",
+            "version": "v1.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/excelwebzone/EWZRecaptchaBundle.git",
+                "reference": "e230ff52a7907f44cb693bb4a8c6d49cf736965c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/e230ff52a7907f44cb693bb4a8c6d49cf736965c",
+                "reference": "e230ff52a7907f44cb693bb4a8c6d49cf736965c",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/framework-bundle": "~3.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "EWZ\\Bundle\\RecaptchaBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael H. Arieli",
+                    "email": "excelwebzone@gmail.com",
+                    "homepage": "http://excelwebzone.com/"
+                }
+            ],
+            "description": "This bundle provides easy reCAPTCHA form field integration",
+            "homepage": "https://github.com/excelwebzone/EWZRecaptchaBundle",
+            "keywords": [
+                "recaptcha"
+            ],
+            "time": "2015-12-19 21:47:54"
         },
         {
             "name": "friendsofsymfony/user-bundle",
