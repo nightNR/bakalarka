@@ -77,6 +77,8 @@ fos_user:
     firewall_name: main
     user_class: PubLeashBundle\Entity\User
     registration:
+      confirmation:
+        enabled: true
       form:
         type: UserBundle\Form\Type\RegistrationFormType
 
