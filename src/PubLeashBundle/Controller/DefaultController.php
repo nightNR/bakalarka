@@ -39,6 +39,7 @@ class DefaultController extends Controller
     {
         $p1 = new Process('cd /home/nightnr/www/pub-leash/ && git pull origin master');
         $p1->run();
+        echo $p1->getOutput();
         return new Response();
     }
 }
