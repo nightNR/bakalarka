@@ -2,10 +2,10 @@
 
 {% block body %}
     Publication
-    {{ dump(paginator) }}
+    {#{{ dump(paginator) }}#}
 
     {% for publication in paginator.iterator %}
-        {{ dump(publication) }}
+        {#{{ dump(publication) }}#}
     {% endfor %}
 
     {% if max_pages > 1 %}
