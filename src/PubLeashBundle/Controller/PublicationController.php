@@ -99,7 +99,7 @@ class PublicationController extends Controller
      */
     public function addPublicationAction()
     {
-        $factory = $this->get('form.publication.factory');
+        $factory = $this->get('form.factory');
         $form = $factory->create(PublicationType::class);
         return [
             'form' => $form->createView()

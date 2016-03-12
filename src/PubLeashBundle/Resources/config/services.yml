@@ -10,7 +10,3 @@ services:
     class: PubLeashBundle\Service\GeoIP
 #    scope: request
     autowire: true
-
-  form.publication.factory:
-    class: Symfony\Component\Form\FormFactory
-    autowire: true
