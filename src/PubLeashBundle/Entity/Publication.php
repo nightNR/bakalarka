@@ -71,11 +71,12 @@ class Publication
     /**
      * @param $author
      */
-    public function addAuthor($author)
+    public function addAuthor(User $author)
     {
         if($this->authors === null) {
             $this->authors = new ArrayCollection();
         }
+        $author->addPublication($this);
         $this->authors[] = $author;
     }
 
