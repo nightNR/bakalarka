@@ -8,6 +8,7 @@
 
 namespace PubLeashBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use PubLeashBundle\Entity\Traits\DateUpdateTrait;
 
@@ -50,7 +51,7 @@ class Publication
     protected $language;
 
     /**
-     * @var
+     * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="PubLeashBundle\Entity\User", mappedBy="publications")
      */
     protected $authors;
@@ -66,6 +67,17 @@ class Publication
      * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\Review", mappedBy="publication")
      */
     protected $reviews;
+
+    /**
+     * @param $author
+     */
+    public function addAuthor($author)
+    {
+        if($this->authors === null) {
+            $this->authors = new ArrayCollection();
+        }
+        $this->authors[] = $author;
+    }
 
 
     /**

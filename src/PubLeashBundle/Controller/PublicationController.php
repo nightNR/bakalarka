@@ -109,7 +109,8 @@ class PublicationController extends Controller
         if($form->isSubmitted() && $form->isValid())
         {
             $user = $this->get('security.token_storage')->getToken()->getUser();
-            dump($user);
+//            dump($user);
+            $publication->addAuthor($user);
             $em = $this->getDoctrine()->getManager();
             $em->persist($publication);
             $em->flush();
