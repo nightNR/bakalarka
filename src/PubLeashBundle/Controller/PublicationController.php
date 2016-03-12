@@ -9,6 +9,7 @@
 namespace PubLeashBundle\Controller;
 
 
+use PubLeashBundle\Entity\Publication;
 use PubLeashBundle\Form\PublicationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -97,10 +98,21 @@ class PublicationController extends Controller
      * @Template()
      * @return Response
      */
-    public function addPublicationAction()
+    public function addPublicationAction(Request $request)
     {
         $factory = $this->get('form.factory');
-        $form = $factory->create(PublicationType::class);
+        $publication = new Publication();
+        $form = $factory->create(PublicationType::class, $publication);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($publication);
+            $em->flush();
+
+            return $this->redirectToRoute('publeash_publication_publication');
+        }
         return [
             'form' => $form->createView()
         ];
