@@ -28,9 +28,16 @@ class PublicationController extends Controller
     public function publicationAction($page)
     {
         $publicationService = $this->get('publication');
-        $paginator = $publicationService->getPublications($page);
+        $limit = 5;
+
+        $paginator = $publicationService->getPublications($page, $limit);
+
+        $maxPages = ceil($paginator->count() / $limit);
+
         return [
-            'paginator' => $paginator
+            'paginator' => $paginator,
+            'max_pages' => $maxPages,
+            'current_page' => $page
         ];
     }
 
