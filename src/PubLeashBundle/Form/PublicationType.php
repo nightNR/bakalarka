@@ -17,8 +17,8 @@ class PublicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('description')
+            ->add('title', array('label' => false, 'translation_domain' => 'PubLeashBundle', 'attr' => ['placeholder' => 'publication.title']))
+            ->add('description', array('label' => false, 'translation_domain' => 'PubLeashBundle', 'attr' => ['placeholder' => 'publication.title']))
 //            ->add('dateCreate', DateTimeType::class)
 //            ->add('dateUpdate', DateTimeType::class)
             ->add('language', EntityType::class, [

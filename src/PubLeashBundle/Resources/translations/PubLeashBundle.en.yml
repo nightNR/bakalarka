@@ -12,3 +12,8 @@ trans:
   books_browse: 'Browse Books'
   books_add: 'Publish new book'
   library: 'Library'
+
+publication:
+  title: 'Title'
+  description: 'Description'
+  add: 'Add'
