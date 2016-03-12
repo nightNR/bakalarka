@@ -10,3 +10,7 @@ services:
     class: PubLeashBundle\Service\GeoIP
 #    scope: request
     autowire: true
+
+  publication:
+    class: PubLeashBundle\Service\Publication
+    autowire: true

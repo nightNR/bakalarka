@@ -27,8 +27,11 @@ class PublicationController extends Controller
      */
     public function publicationAction($page)
     {
-//        var_dump($page);
-        return [];
+        $publicationService = $this->get('publication');
+        $paginator = $publicationService->getPublications($page);
+        return [
+            'paginator' => $paginator
+        ];
     }
 
     /**
