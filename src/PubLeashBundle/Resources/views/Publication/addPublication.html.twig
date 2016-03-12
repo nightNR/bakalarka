@@ -3,12 +3,12 @@
 {% block body %}
     <div class="well col-lg-5">
         <h1 class="text-center">Add publication</h1>
-        {#{{ form_start(form, {'method': 'post', 'action': path('publeash_publication_addpublication'), 'attr': {'class': 'publeash_publication_addpublication'}}) }}#}
-        {#{{ form_widget(form) }}#}
+        {{ form_start(form, {'method': 'post', 'action': path('publeash_publication_addpublication'), 'attr': {'class': 'publeash_publication_addpublication'}}) }}
+        {{ form_widget(form) }}
         <div class="form-group">
             <input type="submit" id="_submit" name="_submit" value="{{ 'publication.add'|trans }}"
                    class="btn btn-primary btn-block"/>
         </div>
-        {#{{ form_end(form) }}#}
+        {{ form_end(form) }}
     </div>
 {% endblock %}
