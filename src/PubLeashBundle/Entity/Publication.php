@@ -79,6 +79,46 @@ class Publication
         $this->authors[] = $author;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getChapters()
+    {
+        return $this->chapters;
+    }
+
+    /**
+     * @param mixed $chapters
+     */
+    public function setChapters($chapters)
+    {
+        $this->chapters = $chapters;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReviews()
+    {
+        return $this->reviews;
+    }
+
+    /**
+     * @param mixed $reviews
+     */
+    public function setReviews($reviews)
+    {
+        $this->reviews = $reviews;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAuthors()
+    {
+        return $this->authors;
+    }
+
 
     /**
      * Get id
