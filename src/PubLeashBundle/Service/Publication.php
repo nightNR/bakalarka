@@ -35,7 +35,7 @@ class Publication
      * @return Paginator
      */
     public function getPublications($page = 1) {
-        $queryBuilder = $this->em->createQueryBuilder()->select()->from('publication', 'p')->orderBy(new OrderBy('date_create', 'DESC'));
+        $queryBuilder = $this->em->createQueryBuilder()->select('*')->from('publication', 'p')->orderBy(new OrderBy('date_create', 'DESC'));
         return $this->paginate($queryBuilder, $page);
     }
 
