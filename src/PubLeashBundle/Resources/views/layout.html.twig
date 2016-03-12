@@ -27,18 +27,14 @@
 
 <body>
 {% block navigation %}
-    {{ include("PubLeashBundle:Default:navigation.html.twig") }}
-{% endblock %}
-{% block breadcrumbs %}
-    <div class="container-fluid">
-        {{ wo_render_breadcrumbs({separator: ''}) }}
-    </div>
+    {{ include("PubLeashBundle:navigation.html.twig") }}
 {% endblock %}
 {% block body %}
 {% endblock %}
 <div class="container">
     <div class="col-lg-5">
-        {#{{ dump(app) }}#}
+
+        {{ dump() }}
     </div>
 </div>
 </body>

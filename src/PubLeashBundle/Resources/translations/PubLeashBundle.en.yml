@@ -4,3 +4,11 @@ user:
   address: 'Address'
   city: 'City'
   country: 'Country'
+  login: 'Login'
+
+trans:
+  home: 'Home'
+  books: 'Books'
+  books_browse: 'Browse Books'
+  books_add: 'Publish new book'
+  library: 'Library'

@@ -18,18 +18,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
 
-        // Pass "_demo" route name without any parameters
-        $breadcrumbs->addRouteItem("Demo", 'fos_user_profile_show');
-
-        // Pass "_demo_hello" route name with parameters
-        $breadcrumbs->addRouteItem("Hello Breadcrumbs", "fos_user_profile_show", [
-            'name' => 'Breadcrumbs',
-        ]);
-
-        // Add "homepage" route link to begin of breadcrumbs
-        $breadcrumbs->prependRouteItem("Home", "publeash_default_index");
         /**
          * @var GeoIP $geoIp
          */
@@ -39,7 +28,7 @@ class DefaultController extends Controller
         }catch(AddressNotFoundException $e){
 //            dump($e);
         }
-        return $this->render("PubLeashBundle:Default:layout.html.twig");
+        return [];
     }
 
     /**

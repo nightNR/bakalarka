@@ -20,11 +20,12 @@ class PublicationController extends Controller
     /**
      * @Route("/publication/list/{page}", defaults={"page": "1"}, requirements={"page": "\d+"})
      * @Method("GET")
+     * @Template()
      */
     public function publicationAction($page)
     {
 //        var_dump($page);
-        return new Response();
+        return [];
     }
 
     /**
@@ -92,11 +93,12 @@ class PublicationController extends Controller
     /**
      * @Route("/publication/add/")
      * @Method("GET")
+     * @Template()
      * @return Response
      */
     public function addPublicationAction()
     {
-        return new Response();
+        return [];
     }
 
     /**

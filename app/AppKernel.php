@@ -21,7 +21,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
             new Ornicar\GravatarBundle\OrnicarGravatarBundle(),
-            new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
             new PubLeashBundle\PubLeashBundle(),
             new UserBundle\UserBundle(),
