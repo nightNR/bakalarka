@@ -34,9 +34,9 @@ class Publication
      * @param int $page
      * @return Paginator
      */
-    public function getPublications($page = 1) {
+    public function getPublications($page = 1, $limit = 5) {
         $queryBuilder = $this->em->createQueryBuilder()->select('*')->from('publication', 'p')->orderBy(new OrderBy('date_create', 'DESC'));
-        return $this->paginate($queryBuilder, $page);
+        return $this->paginate($queryBuilder, $page, $limit);
     }
 
     /**
