@@ -2,6 +2,7 @@
 
 namespace PubLeashBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,10 +19,15 @@ class PublicationType extends AbstractType
         $builder
             ->add('title')
             ->add('description')
-            ->add('dateCreate', DateTimeType::class)
-            ->add('dateUpdate', DateTimeType::class)
-            ->add('language')
-            ->add('authors')
+//            ->add('dateCreate', DateTimeType::class)
+//            ->add('dateUpdate', DateTimeType::class)
+            ->add('language', EntityType::class, [
+                    'class' => 'PubLeashBundle\Entity\LanguageEnum',
+                    'choice_label' => 'name',
+                    'label' => false
+                ]
+            )
+//            ->add('authors')
         ;
     }
     
