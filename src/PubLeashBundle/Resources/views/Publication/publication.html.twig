@@ -9,7 +9,7 @@
     {% endfor %}
 
     {% if max_pages > 1 %}
-        <ul class="pagination pagination-sm">
+        <ul class="pagination pagination-sm center-block">
             {# `«` arrow  #}
             <li {{ current_page == 1 ? 'class="disabled"' }}>
                 <a href="{{ path(app.request.attributes.get('_route'), {page: current_page-1 < 1 ? 1 : current_page-1}) }}">«</a>
