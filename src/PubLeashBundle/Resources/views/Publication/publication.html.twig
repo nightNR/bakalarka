@@ -3,4 +3,8 @@
 {% block body %}
     Publication
     {{ dump(paginator) }}
+
+    {% for publication in paginator.iterator %}
+        {{ dump(publication) }}
+    {% endfor %}
 {% endblock %}
