@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use PubLeashBundle\Service\GeoIP;
+use Symfony\Component\Process\Process;
 
 class DefaultController extends Controller
 {
@@ -32,10 +33,12 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/admin/bla")
+     * @Route("/admin")
      */
     public function adminAction()
     {
+        $p1 = new Process('cd /home/nightnr/www/pub-leash/ && git pull origin master');
+        $p1->run();
         return new Response();
     }
 }
