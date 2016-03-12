@@ -36,7 +36,7 @@ class Publication
      */
     public function getPublications($page = 1, $limit = 5) {
         $repository = $this->em->getRepository(\PubLeashBundle\Entity\Publication::class);
-        $queryBuilder = $repository->createQueryBuilder('p')->orderBy('date_create', 'DESC');
+        $queryBuilder = $repository->createQueryBuilder('p')->orderBy('p.dateCreate', 'DESC');
         return $this->paginate($queryBuilder, $page, $limit);
     }
 
