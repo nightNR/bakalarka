@@ -32,12 +32,14 @@ class PublicationController extends Controller
 
         $paginator = $publicationService->getPublications($page, $limit);
 
+//        $result = $paginator->getIterator();
+
         $maxPages = ceil($paginator->count() / $limit);
 
         return [
             'paginator' => $paginator,
             'max_pages' => $maxPages,
-            'current_page' => $page
+            'current_page' => $page,
         ];
     }
 
