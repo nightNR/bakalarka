@@ -114,7 +114,7 @@ class PublicationController extends Controller
             $em->persist($publication);
             $em->flush();
 
-            return $this->redirectToRoute('publeash_publication_publication');
+//            return $this->redirectToRoute('publeash_publication_publication');
         }
         return [
             'form' => $form->createView()
