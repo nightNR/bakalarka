@@ -95,7 +95,7 @@ class PublicationController extends Controller
 
     /**
      * @Route("/publication/add/")
-     * @Method("GET")
+//     * @Method("GET")
      * @Template()
      * @return Response
      */
@@ -108,6 +108,8 @@ class PublicationController extends Controller
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            dump($user);
             $em = $this->getDoctrine()->getManager();
             $em->persist($publication);
             $em->flush();
