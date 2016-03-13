@@ -2,14 +2,15 @@
 
 namespace PubLeashBundle\Form;
 
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use KMS\FroalaEditorBundle\Form\Type\FroalaEditorType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PublicationType extends AbstractType
+class ChapterType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -19,16 +20,8 @@ class PublicationType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, array('label' => false, 'translation_domain' => 'PubLeashBundle', 'attr' => ['placeholder' => 'publication.title']))
-            ->add('description', TextType::class, array('label' => false, 'translation_domain' => 'PubLeashBundle', 'attr' => ['placeholder' => 'publication.description']))
-//            ->add('dateCreate', DateTimeType::class)
-//            ->add('dateUpdate', DateTimeType::class)
-            ->add('language', EntityType::class, [
-                    'class' => 'PubLeashBundle\Entity\LanguageEnum',
-                    'choice_label' => 'name',
-                    'label' => false
-                ]
-            )
-//            ->add('authors')
+            ->add('content', FroalaEditorType::class, ['attr' => ['class' => 'add-chapter-content-editor']])
+            ->add('isPublished', CheckboxType::class)
         ;
     }
     
@@ -38,7 +31,7 @@ class PublicationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'PubLeashBundle\Entity\Publication'
+            'data_class' => 'PubLeashBundle\Entity\Chapter'
         ));
     }
 }

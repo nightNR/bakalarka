@@ -12,8 +12,28 @@ trans:
   books_browse: 'Browse Books'
   books_add: 'Publish new book'
   library: 'Library'
+  edit: 'Edit Publication'
+  read:
+    publication: 'Read Publication'
 
 publication:
   title: 'Title'
   description: 'Description'
+  author: 'Author'
   add: 'Add'
+  edit: 'Edit'
+  date_create: 'Written'
+  date_update: 'Last edit'
+  confirm:
+      delete:
+          claim: 'Do you really want to delete {publicationTitle}?'
+          title: 'Delete confirmation'
+  show:
+    notauthor: 'Only author can read unpublished publications!'
+  chapters:
+    available: 'Available chapters'
+    add: 'Add Chapter'
+
+main:
+  close: 'Close'
+  confirm: 'Confirm'

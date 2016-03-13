@@ -16,13 +16,13 @@ trait DateUpdateTrait
 
 
     /**
-     * @var
+     * @var \DateTime
      * @ORM\Column(name="date_create", type="datetime")
      */
     protected $dateCreate;
 
     /**
-     * @var
+     * @var \DateTime
      * @ORM\Column(name="date_update", type="datetime")
      */
     protected $dateUpdate;
@@ -47,7 +47,7 @@ trait DateUpdateTrait
      */
     public function getDateCreate()
     {
-        return $this->dateCreate;
+        return $this->dateCreate->format('d.m.Y H:i:s');
     }
 
     /**
@@ -65,7 +65,7 @@ trait DateUpdateTrait
      */
     public function getDateUpdate()
     {
-        return $this->dateUpdate;
+        return $this->dateUpdate->format('d.m.Y H:i:s');;
     }
 
     /**

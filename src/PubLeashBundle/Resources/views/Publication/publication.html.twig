@@ -1,16 +1,87 @@
+{% trans_default_domain 'PubLeashBundle' %}
 {% extends '@PubLeash/layout.html.twig' %}
 
 {% block body %}
-    Publication
-    {#{{ dump(paginator) }}#}
+    <script type="text/javascript">
+        $(function(){
+            $('#confirmDeleteModal').on('show.bs.modal', function (event) {
+                var baseUrl = "{{ path('publeash_publication_removepublication', {publicationId: '{publicationId}'}) }}";
+                var baseCaption = "{{ 'publication.confirm.delete.claim'|trans }}";
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var title = button.data('title');
 
+                var modal = $(this);
+
+                var modalUrl = modal.find('#confirm-delete');
+                var modalBody = modal.find('.modal-body');
+
+                modalBody.text(baseCaption.replace('{publicationTitle}', title));
+                modalUrl.attr('href', encodeURI(decodeURI(baseUrl).replace('{publicationId}', id)));
+                modalUrl.attr('href', encodeURI(decodeURI(modalUrl.attr('href')).replace('{publicationId}', id)));
+            })
+        });
+
+    </script>
+    <div class="row">
+        {% set counter = 0 %}
     {% for publication in paginator.iterator %}
-        {#{{ dump(publication) }}#}
-    {% endfor %}
+        {% set counter  = (counter + 1) %}
+            <div class="col-xs-6 col-sm-4 col-md-2">
+                <div class="thumbnail publication">
+                    {#<img src="..." alt="...">#}
+                    {% if app.user and app.user in publication.authors %}
+                        <div class="row tools-row text-right">
+                            <a href="{{ path('publeash_publication_editpublication', {publicationId: publication.id, name: publication.prettyUrlTitle}) }}"
+                               class="btn btn-default" role="button"><i class="glyphicon glyphicon-edit"></i></a>{#glyphicon glyphicon-remove#}
+                            <button class="btn btn-danger" role="button" data-toggle="modal" data-target="#confirmDeleteModal" data-id="{{ publication.id }}" data-title="{{ publication.title }}"><i class="glyphicon glyphicon-remove"></i></button>
+                        </div>
+                    {% endif %}
+                    <div class="caption" onclick="location.href='{{ path('publeash_publication_showpublication', {publicationId: publication.id, name: publication.prettyUrlTitle}) }}';">
+                        <h3>{{ publication.title }}</h3>
+                        {% set stars = publication.rank %}
+                        {% for i in 1..5 %}
+                            {% if stars >= 1 %}
+                                <i class="glyphicon glyphicon-star star-color"></i>
+                            {% elseif stars > 0 %}
+                                <i class="glyphicon glyphicon-star star-color half"></i>
+                            {% else %}
+                                <i class="glyphicon glyphicon-star-empty star-color"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <p>{{ publication.description }}</p>
+                        <p class="text-center">
+                        </p>
+                        <div class="author">
+                            {{ 'publication.author'|trans }}:
+                            {% for author in publication.authors %}
+                                {{ author.username }} {{ (loop.last == false) ? ',' : '' }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+        {% if counter % 2 == 0 %}
+            <div class="clearfix visible-xs-block"></div>
+        {% endif %}
+
+        {% if counter % 3 == 0 %}
+            <div class="clearfix visible-sm-block"></div>
+        {% endif %}
+
+        {% if counter % 6 == 0 %}
+            <div class="clearfix visible-md-block"></div>
+            <div class="clearfix visible-lg-block"></div>
+        {% endif %}
+
+    {% endfor %}
+    </div>
+
+    <div class="row">
     {% if max_pages > 1 %}
         <div class="text-center">
-            <ul class="pagination pagination-sm center-block">
+            <ul class="pagination pagination-sm">
                 {# `«` arrow  #}
                 <li {{ current_page == 1 ? 'class="disabled"' }}>
                     <a href="{{ path(app.request.attributes.get('_route'), {page: current_page-1 < 1 ? 1 : current_page-1}) }}">«</a>
@@ -30,4 +101,23 @@
             </ul>
         </div>
     {% endif %}
+    </div>
+
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="confirmDeleteModal">{{ 'publication.confirm.delete.title'|trans }}</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'main.close'|trans }}</button>
+                    <a href="#" type="button" class="btn btn-danger" id="confirm-delete">{{ 'main.confirm'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

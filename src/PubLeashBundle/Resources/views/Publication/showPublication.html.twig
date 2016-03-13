@@ -1,0 +1,85 @@
+{% trans_default_domain 'PubLeashBundle' %}
+{% extends '@PubLeash/layout.html.twig' %}
+
+{% block title %}
+    - {{ publication.title }}
+{% endblock %}
+
+{% block body %}
+    <div class="row publication-show">
+        <div class="container-fluid">
+            {% if app.user and app.user not in publication.authors %}
+                <div class="page-header">
+                    <h1>{{ 'publication.show.noauthor'|trans }}</h1>
+                </div>
+            {% else %}
+                <div class="page-header">
+                    <h1>{{ publication.title }}
+                        {% set stars = publication.rank %}
+                        {% for i in 1..5 %}
+                            {% if stars >= 1 %}
+                                <i class="glyphicon glyphicon-star star-color"></i>
+                            {% elseif stars > 0 %}
+                                <i class="glyphicon glyphicon-star star-color half"></i>
+                            {% else %}
+                                <i class="glyphicon glyphicon-star-empty star-color"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </h1>
+
+                </div>
+                <div class="author row">
+            <span class="text-left col-md-6">
+            {{ 'publication.author'|trans }}:
+                {% for author in publication.authors %}
+                    {{ author.username }} {{ (loop.last == false) ? ',' : '' }}
+                {% endfor %}
+            </span>
+            <span class="text-right col-md-6">
+                {{ 'publication.date_create'|trans }}: {{ publication.dateCreate }}
+                {{ 'publication.date_update'|trans }}: {{ publication.dateUpdate }}
+            </span>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {{ publication.description }}
+                    </div>
+                </div>
+                <div class="page-header">
+                    <h3>{{ 'publication.chapters.available'|trans }}<span>
+                            <a href="{{ path('publeash_publication_addchapter', {publicationId: publication.id}) }}"
+                               class="btn btn-success" style="margin-left: 10px">
+                                <i class="glyphicon glyphicon-plus"></i>
+                            </a>
+                        </span>
+                    </h3>
+                </div>
+                {% set chapters = publication.chapters %}
+                {% for chapter in chapters %}
+                    <div class="bs-callout bs-callout-info">
+                        <div class="page-header">
+                            <h3>{{ chapter.title }}{% set stars = chapter.rank %}
+                                {% for i in 1..5 %}
+                                    {% if stars >= 1 %}
+                                        <i class="glyphicon glyphicon-star star-color"></i>
+                                    {% elseif stars > 0 %}
+                                        <i class="glyphicon glyphicon-star star-color half"></i>
+                                    {% else %}
+                                        <i class="glyphicon glyphicon-star-empty star-color"></i>
+                                    {% endif %}
+                                {% endfor %}</h3>
+                        </div>
+                        <div class="row author">
+                            <span class="text-right col-md-6 col-md-offset-6">
+                                {{ 'publication.date_create'|trans }}: {{ chapter.dateCreate }}
+                                {{ 'publication.date_update'|trans }}: {{ chapter.dateUpdate }}
+                            </span>
+                        </div>
+
+                        {{ chapter.preview | raw }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -96,3 +96,98 @@ body {
 .nav > li > a:hover {
     background-color: #393939;
 }
+
+.publication:hover
+{
+    -moz-box-shadow: 0 0px 5px 5px #ddd;
+    -webkit-box-shadow: 0 0px 5px 5px #ddd;
+    box-shadow: 0 0px 5px 5px #ddd;
+}
+
+.publication .tools-row {
+    margin-top: -14px;
+    margin-left: -14px;
+    margin-right: -14px;
+    border-bottom: solid 1px #ddd;
+    box-shadow: 0 4px 2px -2px #ddd;
+    margin: -4px;
+
+}
+
+.publication .tools-row .btn {
+    border-radius: 0;
+    margin-left: -4px;
+}
+
+.publication .author,
+.publication .info,
+.publication-show .author,
+.publication-show .info{
+    display: block;
+    margin-top: -10px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* CSS used here will be applied after bootstrap.css */
+.half {
+    position:relative;
+}
+/*.font{*/
+    /*font-size:6em;*/
+/*}*/
+.half:after {
+    content:'';
+    position:absolute;
+    z-index:1;
+    background:white;
+    width: 50%;
+    height: 100%;
+    left: 47%;
+}
+
+h1 .glyphicon {
+    font-size: 25px;
+}
+
+h3 .glyphicon {
+    font-size: 20px;
+}
+
+.star-color {
+    color: #ff9100;
+}
+
+.add-color {
+    color: #00CC00;
+}
+
+.bs-callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
+.bs-callout-danger {
+    border-left-color: #ce4844;
+}
+
+.bs-callout-info {
+    border-left-color: #1b809e;
+}
+
+.bs-callout-info:hover {
+    -webkit-box-shadow: 0px 0px 5px 2px rgba(27,128,158,1);
+    -moz-box-shadow: 0px 0px 5px 2px rgba(27,128,158,1);
+    box-shadow: 0px 0px 5px 2px rgba(27,128,158,1);
+}
+
+.add-chapter-content-editor {
+    min-height: 600px;
+}
+
+/*.thumbnail {*/
+    /*height: 380px;*/
+/*}*/

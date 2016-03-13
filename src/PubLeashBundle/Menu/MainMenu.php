@@ -31,6 +31,12 @@ class MainMenu implements ContainerAwareInterface
         ],
         "publeash_library_library" => [
             'trans.library'
+        ],
+        "publeash_publication_editpublication" => [
+            'trans.edit'
+        ],
+        "publeash_publication_showpublication" => [
+            'trans.read.publication'
         ]
     ];
 
@@ -38,7 +44,20 @@ class MainMenu implements ContainerAwareInterface
         'trans.books_browse' => 'publeash_publication_publication',
         'trans.books_add' => 'publeash_publication_addpublication',
         'user.login' => 'fos_user_security_login',
-        'trans.library' => 'publeash_library_library'
+        'trans.library' => 'publeash_library_library',
+        'trans.edit' => 'publeash_publication_editpublication',
+        'trans.read.publication' => 'publeash_publication_showpublication'
+    ];
+
+    private static $REQUIREMENTS_MAP = [
+        'trans.edit' => [
+            'publicationId',
+            'name'
+        ],
+        'trans.read.publication' => [
+            'publicationId',
+            'name'
+        ]
     ];
 
 
@@ -47,14 +66,26 @@ class MainMenu implements ContainerAwareInterface
          * @var RequestStack $requestStack
          */
         $requestStack = $this->container->get('request_stack');
-        dump($requestStack->getCurrentRequest()->get('_route'));
+        $params = $requestStack->getCurrentRequest()->attributes;
+        dump($params);
         $menu = $factory->createItem('root');
         $menu->setChildrenAttribute('class', 'breadcrumb');
         $menu->addChild('trans.home', array('route' => 'publeash_default_index'));
         $route = $requestStack->getCurrentRequest()->get('_route');
+        dump($route);
         if(isset(self::$BREADCRUMB_MAP[$route])) {
             foreach(self::$BREADCRUMB_MAP[$route] as $menuItem) {
-                $menu->addChild($menuItem, array('route' => isset(self::$MENU_ITEM_TO_ROUTE_MAP[$menuItem])?self::$MENU_ITEM_TO_ROUTE_MAP[$menuItem]:'publeash_default_index'));
+                $routeParams = [];
+                if(isset(self::$REQUIREMENTS_MAP[$menuItem])) {
+                    foreach(self::$REQUIREMENTS_MAP[$menuItem] as $requirement) {
+                        $routeParams[$requirement] = $params->get($requirement);
+                    }
+                }
+                $menu->addChild($menuItem, [
+                        'route' => isset(self::$MENU_ITEM_TO_ROUTE_MAP[$menuItem])?self::$MENU_ITEM_TO_ROUTE_MAP[$menuItem]:'publeash_default_index',
+                        'routeParameters' => $routeParams
+                    ]
+                );
             }
         }
         return $menu;
