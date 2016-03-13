@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
             new Ornicar\GravatarBundle\OrnicarGravatarBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new KMS\FroalaEditorBundle\KMSFroalaEditorBundle(),
 
             new PubLeashBundle\PubLeashBundle(),
             new UserBundle\UserBundle(),

@@ -145,3 +145,8 @@ knp_menu:
     templating: false
     # the renderer to use, list is also available by default
     default_renderer: twig
+
+
+kms_froala_editor:
+    language: "en"
+    height: 500
