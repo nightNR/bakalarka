@@ -17,6 +17,7 @@ use PubLeashBundle\Entity\Traits\DateUpdateTrait;
  *
  * @ORM\Table("chapter")
  * @ORM\Entity()
+ * @ORM\HasLifecycleCallbacks()
  */
 class Chapter
 {
