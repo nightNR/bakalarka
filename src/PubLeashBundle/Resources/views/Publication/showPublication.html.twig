@@ -1,5 +1,6 @@
 {% trans_default_domain 'PubLeashBundle' %}
 {% extends '@PubLeash/layout.html.twig' %}
+{% import '@PubLeash/layout.html.twig' as layout %}
 
 {% block title %}
     - {{ publication.title }}
@@ -15,16 +16,7 @@
             {% else %}
                 <div class="page-header">
                     <h1>{{ publication.title }}
-                        {% set stars = publication.rank %}
-                        {% for i in 1..5 %}
-                            {% if stars >= 1 %}
-                                <i class="glyphicon glyphicon-star star-color"></i>
-                            {% elseif stars > 0 %}
-                                <i class="glyphicon glyphicon-star star-color half"></i>
-                            {% else %}
-                                <i class="glyphicon glyphicon-star-empty star-color"></i>
-                            {% endif %}
-                        {% endfor %}
+                        {{ layout.stars(publication.rank) }}
                     </h1>
 
                 </div>
@@ -58,16 +50,8 @@
                 {% for chapter in chapters %}
                     <div class="bs-callout bs-callout-info">
                         <div class="page-header">
-                            <h3>{{ chapter.title }}{% set stars = chapter.rank %}
-                                {% for i in 1..5 %}
-                                    {% if stars >= 1 %}
-                                        <i class="glyphicon glyphicon-star star-color"></i>
-                                    {% elseif stars > 0 %}
-                                        <i class="glyphicon glyphicon-star star-color half"></i>
-                                    {% else %}
-                                        <i class="glyphicon glyphicon-star-empty star-color"></i>
-                                    {% endif %}
-                                {% endfor %}</h3>
+                            <h3>{{ chapter.title }}
+                                {{ layout.stars(chapter.rank) }}
                         </div>
                         <div class="row author">
                             <span class="text-right col-md-6 col-md-offset-6">

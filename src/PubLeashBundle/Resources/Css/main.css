@@ -158,6 +158,12 @@ h3 .glyphicon {
     color: #ff9100;
 }
 
+.star-color-empty {
+    color: #ffe6e6;
+}
+
+.icon-star-empty.icon-star-half:after { content: '\f006'; text-indent: -.35em;}
+
 .add-color {
     color: #00CC00;
 }

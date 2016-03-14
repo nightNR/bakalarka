@@ -166,9 +166,13 @@ class Chapter
          * @var Review $review
          */
         $sum = 0;
+        $count = 0;
         foreach($reviews as $review) {
-            $sum += 2*$review->getRank();
+            if(empty($review->getReview())) {
+                $sum += 2 * $review->getRank();
+                $count++;
+            }
         }
-        return count($reviews)?((ceil($sum / count($reviews))) / 2):0;
+        return $count?((ceil($sum / $count)) / 2):0;
     }
 }

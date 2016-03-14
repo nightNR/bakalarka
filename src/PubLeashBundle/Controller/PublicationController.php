@@ -114,7 +114,6 @@ class PublicationController extends Controller
 
     /**
      * @Route("/publication/add/")
-     * Method("GET")
      * @Template()
      * @return Response
      */

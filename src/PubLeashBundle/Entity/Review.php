@@ -47,7 +47,7 @@ class Review
 
     /**
      * @var
-     * @ORM\Column(name="rank", type="smallint")
+     * @ORM\Column(name="rank", type="decimal", precision=2, scale=1)
      */
     protected $rank;
 

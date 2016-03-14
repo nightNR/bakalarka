@@ -41,3 +41,16 @@
 </div>
 </body>
 </html>
+
+{% macro stars(rank) %}
+    {% for i in 1..5 %}
+        {% if rank >= 1 %}
+            <i class="glyphicon glyphicon-star star-color"></i>
+        {% elseif rank > 0 %}
+            <i class="glyphicon glyphicon-star-half glyphicon-star-empty star-color"></i>
+        {% else %}
+            <i class="glyphicon glyphicon-star-empty star-color-empty"></i>
+        {% endif %}
+        {% set rank = (rank - 1) %}
+    {% endfor %}
+{% endmacro %}

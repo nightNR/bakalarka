@@ -1,5 +1,6 @@
 {% trans_default_domain 'PubLeashBundle' %}
 {% extends '@PubLeash/layout.html.twig' %}
+{% import '@PubLeash/layout.html.twig' as layout %}
 
 {% block body %}
     <script type="text/javascript">
@@ -39,16 +40,8 @@
                     {% endif %}
                     <div class="caption" onclick="location.href='{{ path('publeash_publication_showpublication', {publicationId: publication.id, name: publication.prettyUrlTitle}) }}';">
                         <h3>{{ publication.title }}</h3>
-                        {% set stars = publication.rank %}
-                        {% for i in 1..5 %}
-                            {% if stars >= 1 %}
-                                <i class="glyphicon glyphicon-star star-color"></i>
-                            {% elseif stars > 0 %}
-                                <i class="glyphicon glyphicon-star star-color half"></i>
-                            {% else %}
-                                <i class="glyphicon glyphicon-star-empty star-color"></i>
-                            {% endif %}
-                        {% endfor %}
+                        {#{% set stars = publication.rank %}#}
+                        {{ layout.stars(publication.rank) }}
                         <p>{{ publication.description }}</p>
                         <p class="text-center">
                         </p>
