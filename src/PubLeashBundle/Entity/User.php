@@ -73,6 +73,12 @@ class User extends FOSUser
      */
     protected $publications;
 
+    /**
+     * @var
+     * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\Review", mappedBy="author")
+     */
+    protected $reviews;
+
 
     /**
      * Set firstName

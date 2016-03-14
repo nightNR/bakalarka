@@ -14,3 +14,7 @@ services:
   publication:
     class: PubLeashBundle\Service\Publication
     autowire: true
+
+  review:
+    class: PubLeashBundle\Service\Review
+    autowire: true

@@ -28,7 +28,7 @@ class PublicationType extends AbstractType
                     'label' => false
                 ]
             )
-//            ->add('authors')
+//            ->add('authors', EntityType::class)
         ;
     }
     

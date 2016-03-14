@@ -9,6 +9,7 @@
 namespace PubLeashBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use PubLeashBundle\Entity\Traits\DateUpdateTrait;
 use Symfony\Component\Validator\Constraints\Type;
@@ -64,7 +65,7 @@ class Publication
     protected $chapters;
 
     /**
-     * @var
+     * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\Review", mappedBy="publication")
      */
     protected $reviews;
@@ -119,7 +120,9 @@ class Publication
      */
     public function getReviews()
     {
-        return $this->reviews;
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('isHidden', false));
+        $criteria->andWhere(Criteria::expr()->isNull('review'));
+        return $this->reviews->matching($criteria);
     }
 
     /**

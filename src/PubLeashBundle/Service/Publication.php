@@ -46,20 +46,44 @@ class Publication
      * @return Paginator
      */
     public function getPublications($page = 1, $limit = 5) {
-        $user = $this->tokenStorage->getToken()->getUser();
         $repository = $this->em->getRepository(\PubLeashBundle\Entity\Publication::class);
         $queryBuilder = $repository->createQueryBuilder('p')->orderBy('p.dateCreate', 'DESC');
         $dateTime = new \DateTime("01/01/0001");
-        dump($dateTime);
         $queryBuilder->where('p.dateDelete <= :dateTimeZero');
         $queryBuilder->setParameter('dateTimeZero', $dateTime);
-        if($user instanceof User) {
+        if($user = $this->getUser()) {
             $queryBuilder->andWhere('p.isPublished = true OR :author MEMBER OF p.authors');
             $queryBuilder->setParameter('author', $user);
         } else {
             $queryBuilder->andWhere('p.isPublished = true');
         }
         return $this->paginate($queryBuilder, $page, $limit);
+    }
+
+    public function isAllowedDelete(\PubLeashBundle\Entity\Publication $publication) {
+        if($user = $this->getUser()){
+            return $publication->getAuthors()->contains($user) || $user->hasRole('ROLE_ADMIN');
+        }
+        return false;
+    }
+
+    public function isAllowedEdit(\PubLeashBundle\Entity\Publication $publication) {
+        if($user = $this->getUser()){
+            return $publication->getAuthors()->contains($user)/* || $user->hasRole('ROLE_ADMIN')*/;
+        }
+        return false;
+    }
+
+    public function isAllowedShow(\PubLeashBundle\Entity\Publication $publication) {
+        return true;
+    }
+
+    /**
+     * @return null|User
+     */
+    protected function getUser() {
+        $user = $this->tokenStorage->getToken()->getUser();
+        return ($user instanceof User)?$user:null;
     }
 
     /**

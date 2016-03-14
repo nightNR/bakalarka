@@ -33,14 +33,13 @@ class PublicationController extends Controller
 
         $paginator = $publicationService->getPublications($page, $limit);
 
-//        $result = $paginator->getIterator();
-
         $maxPages = ceil($paginator->count() / $limit);
 
         return [
             'paginator' => $paginator,
             'max_pages' => $maxPages,
             'current_page' => $page,
+            'publication_service' => $publicationService
         ];
     }
 
@@ -69,12 +68,14 @@ class PublicationController extends Controller
      */
     public function showPublicationAction($publicationId)
     {
+        $publicationService = $this->get('publication');
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository(Entity\Publication::class);
 
         $publication = $repository->find($publicationId);
         return [
-            'publication' => $publication
+            'publication' => $publication,
+            'publication_service' => $publicationService
         ];
     }
 

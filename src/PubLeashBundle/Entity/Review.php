@@ -9,6 +9,7 @@
 namespace PubLeashBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PubLeashBundle\Entity\Traits\DateUpdateTrait;
 
 /**
  * Class Review
@@ -16,9 +17,12 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="review")
  * @ORM\Entity()
+ * @ORM\HasLifecycleCallbacks()
  */
 class Review
 {
+
+    use DateUpdateTrait;
     /**
      * @var int
      * @ORM\Column(name="id", type="integer")
@@ -63,6 +67,18 @@ class Review
      * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\Review", mappedBy="review")
      */
     protected $reviews;
+
+    /**
+     * @var
+     * @ORM\ManyToOne(targetEntity="PubLeashBundle\Entity\User", inversedBy="reviews")
+     */
+    protected $author;
+
+    /**
+     * @var
+     * @ORM\Column(name="is_hidden", type="boolean")
+     */
+    protected $isHidden;
 
     /**
      * @return int
@@ -175,6 +191,23 @@ class Review
     {
         $this->reviews = $reviews;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param mixed $author
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+    }
+
 
 
 }

@@ -36,7 +36,7 @@ class MainMenu implements ContainerAwareInterface
             'trans.edit'
         ],
         "publeash_publication_showpublication" => [
-            'trans.read.publication'
+            'trans.read.publication',
         ]
     ];
 
