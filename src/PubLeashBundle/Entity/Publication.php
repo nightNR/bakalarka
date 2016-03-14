@@ -8,8 +8,10 @@
 
 namespace PubLeashBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use PubLeashBundle\Entity\Traits\DateUpdateTrait;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Class Publication
@@ -50,7 +52,7 @@ class Publication
     protected $language;
 
     /**
-     * @var
+     * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="PubLeashBundle\Entity\User", mappedBy="publications")
      */
     protected $authors;
@@ -66,6 +68,76 @@ class Publication
      * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\Review", mappedBy="publication")
      */
     protected $reviews;
+
+    /**
+     * @var
+     * @ORM\Column(name="is_published", type="boolean", options={"default": 0})
+     */
+    protected $isPublished = 0;
+
+    /**
+     * @var
+     * @ORM\Column(name="date_delete", type="datetime")
+     */
+    protected $dateDelete;
+
+    public function __construct()
+    {
+        $this->dateDelete = new \DateTime("01/01/0001");
+    }
+
+    /**
+     * @param $author
+     */
+    public function addAuthor(User $author)
+    {
+        if($this->authors === null) {
+            $this->authors = new ArrayCollection();
+        }
+        $author->addPublication($this);
+        $this->authors[] = $author;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChapters()
+    {
+        return $this->chapters;
+    }
+
+    /**
+     * @param mixed $chapters
+     */
+    public function setChapters($chapters)
+    {
+        $this->chapters = $chapters;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReviews()
+    {
+        return $this->reviews;
+    }
+
+    /**
+     * @return ArrayCollection
+     * @param mixed $reviews
+     */
+    public function setReviews($reviews)
+    {
+        $this->reviews = $reviews;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAuthors()
+    {
+        return $this->authors;
+    }
 
 
     /**
@@ -149,4 +221,60 @@ class Publication
     {
         return $this->language;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIsPublished()
+    {
+        return $this->isPublished;
+    }
+
+    /**
+     * @param mixed $isPublished
+     */
+    public function setIsPublished($isPublished)
+    {
+        $this->isPublished = $isPublished;
+    }
+
+
+
+    public function computeIsPublished() {
+        $chapters = $this->getChapters();
+        /**
+         * @var Chapter $chapter
+         */
+        foreach($chapters as $chapter) {
+            if($chapter->getIsPublished()) return true;
+        }
+        return false;
+    }
+
+    public function getPrettyUrlTitle() {
+
+        return strtolower(preg_replace('/\s{1,}/', '-', preg_replace('/[^a-zA-Z0-9\s.]/','',iconv('UTF-8', 'ASCII//TRANSLIT', $this->title))));
+    }
+
+    public function delete() {
+        $this->dateDelete = new \DateTime();
+    }
+
+    public function isDeleted() {
+        return $this->dateDelete == null;
+    }
+
+    public function getRank() {
+        $reviews = $this->getReviews();
+        /**
+         * @var Review $review
+         */
+        $sum = 0;
+        foreach($reviews as $review) {
+            $sum += 2*$review->getRank();
+        }
+        return count($reviews)?((ceil($sum / count($reviews))) / 2):0;
+    }
+
+
 }

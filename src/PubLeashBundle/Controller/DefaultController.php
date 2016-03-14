@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use PubLeashBundle\Service\GeoIP;
+use Symfony\Component\Process\Process;
 
 class DefaultController extends Controller
 {
@@ -18,18 +19,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $breadcrumbs = $this->get("white_october_breadcrumbs");
 
-        // Pass "_demo" route name without any parameters
-        $breadcrumbs->addRouteItem("Demo", 'fos_user_profile_show');
-
-        // Pass "_demo_hello" route name with parameters
-        $breadcrumbs->addRouteItem("Hello Breadcrumbs", "fos_user_profile_show", [
-            'name' => 'Breadcrumbs',
-        ]);
-
-        // Add "homepage" route link to begin of breadcrumbs
-        $breadcrumbs->prependRouteItem("Home", "publeash_default_index");
         /**
          * @var GeoIP $geoIp
          */
@@ -39,14 +29,17 @@ class DefaultController extends Controller
         }catch(AddressNotFoundException $e){
 //            dump($e);
         }
-        return $this->render("PubLeashBundle:Default:layout.html.twig");
+        return [];
     }
 
     /**
-     * @Route("/admin/bla")
+     * @Route("/admin")
      */
     public function adminAction()
     {
+        $p1 = new Process('cd /home/nightnr/www/pub-leash/ && git pull origin master');
+        $p1->run();
+        echo $p1->getOutput();
         return new Response();
     }
 }

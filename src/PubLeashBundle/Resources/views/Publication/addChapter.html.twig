@@ -1,0 +1,15 @@
+{% trans_default_domain 'PubLeashBundle' %}
+{% extends '@PubLeash/layout.html.twig' %}
+
+{% block body %}
+    <div class="well col-lg-12">
+        <h1 class="text-center">{{ 'publication.chapters.add'|trans }}</h1>
+        {{ form_start(form, {'method': 'post', 'action': path('publeash_publication_addchapter', {publicationId: publication_id}), 'attr': {'class': 'publeash_publication_addchapter'}}) }}
+        {{ form_widget(form) }}
+        <div class="form-group">
+            <input type="submit" id="_submit" name="_submit" value="{{ 'publication.add'|trans }}"
+                   class="btn btn-primary"/>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

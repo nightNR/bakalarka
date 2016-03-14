@@ -9,10 +9,14 @@
 namespace PubLeashBundle\Controller;
 
 
+use PubLeashBundle\Entity;
+use PubLeashBundle\Form\ChapterType;
+use PubLeashBundle\Form\PublicationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class PublicationController extends Controller
@@ -20,11 +24,24 @@ class PublicationController extends Controller
     /**
      * @Route("/publication/list/{page}", defaults={"page": "1"}, requirements={"page": "\d+"})
      * @Method("GET")
+     * @Template()
      */
     public function publicationAction($page)
     {
-//        var_dump($page);
-        return new Response();
+        $publicationService = $this->get('publication');
+        $limit = 15;
+
+        $paginator = $publicationService->getPublications($page, $limit);
+
+//        $result = $paginator->getIterator();
+
+        $maxPages = ceil($paginator->count() / $limit);
+
+        return [
+            'paginator' => $paginator,
+            'max_pages' => $maxPages,
+            'current_page' => $page,
+        ];
     }
 
     /**
@@ -46,13 +63,19 @@ class PublicationController extends Controller
     }
 
     /**
-     * @Route("/publication/read/{publicationId}")
+     * @Route("/publication/read/{publicationId}/{name}")
      * @Method("get")
+     * @Template()
      */
     public function showPublicationAction($publicationId)
     {
-//        var_dump($publicationId);
-        return new Response();
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository(Entity\Publication::class);
+
+        $publication = $repository->find($publicationId);
+        return [
+            'publication' => $publication
+        ];
     }
 
     /**
@@ -91,22 +114,115 @@ class PublicationController extends Controller
 
     /**
      * @Route("/publication/add/")
-     * @Method("GET")
+     * Method("GET")
+     * @Template()
      * @return Response
      */
-    public function addPublicationAction()
+    public function addPublicationAction(Request $request)
     {
-        return new Response();
+        $factory = $this->get('form.factory');
+        $em = $this->getDoctrine()->getManager();
+
+        $publication = new Entity\Publication();
+        $form = $factory->create(PublicationType::class, $publication);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+//            dump($user);
+            $publication->addAuthor($user);
+
+
+            $em->persist($publication);
+            $em->flush();
+
+            return $this->redirectToRoute('publeash_publication_publication');
+        }
+        return [
+            'form' => $form->createView(),
+        ];
+    }
+
+    /**
+     * @Route("/publication/edit/{publicationId}/{name}")
+     * Method("GET")
+     * @Template()
+     * @return Response
+     */
+    public function editPublicationAction(Request $request, $publicationId = 0) {
+
+        $factory = $this->get('form.factory');
+        $em = $this->getDoctrine()->getManager();
+
+        /**
+         * @var Publication $publication;
+         */
+        $publication = $em->getRepository(Entity\Publication::class)->find($publicationId);
+
+        $form = $factory->create(PublicationType::class, $publication);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $em->flush();
+            return $this->redirectToRoute('publeash_publication_showpublication', ['publicationId' => $publicationId, 'name' => $publication->getPrettyUrlTitle()]);
+        }
+        return [
+            'form' => $form->createView(),
+            'params' => ['publicationId' => $publicationId, 'name' => $publication->getPrettyUrlTitle()]
+        ];
+    }
+
+    /**
+     * @Route("/publication/remove/{publicationId}")
+     * @param $publicationId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function removePublicationAction($publicationId) {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository(Entity\Publication::class);
+        /**
+         * @var Entity\Publication $publication
+         */
+        $publication = $repository->find($publicationId);
+        $publication->delete();
+        $em->flush();
+        return $this->redirectToRoute('publeash_publication_publication');
     }
 
     /**
      * @Route("/publication/add/{publicationId}/chapter")
-     * @Method("GET")
+     * @Template()
+     * @param Request $request
      * @param $publicationId
+     * @return array
      */
-    public function addChapter($publicationId)
+    public function addChapterAction(Request $request, $publicationId)
     {
+        $factory = $this->get('form.factory');
+        $em = $this->getDoctrine()->getManager();
 
+        $publication = $em->getRepository(Entity\Publication::class)->find($publicationId);
+
+        $chapter = new Entity\Chapter();
+        $chapter->setPublication($publication);
+        $form = $factory->create(ChapterType::class, $chapter);
+
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+
+            $em->persist($chapter);
+            $em->flush();
+
+            return $this->redirectToRoute('publeash_publication_publication');
+        }
+        return [
+            'form' => $form->createView(),
+            'publication_id' => $publicationId
+        ];
     }
 
 }

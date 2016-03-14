@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>"PubLeash"</title>
+    <title>PubLeash {% block title %}{% endblock %}</title>
     <meta name="description" content="The HTML5 Herald">
     <meta name="author" content="Night">
     {% block javascript %}
@@ -27,18 +27,16 @@
 
 <body>
 {% block navigation %}
-    {{ include("PubLeashBundle:Default:navigation.html.twig") }}
+    {{ include("PubLeashBundle:navigation.html.twig") }}
 {% endblock %}
-{% block breadcrumbs %}
-    <div class="container-fluid">
-        {{ wo_render_breadcrumbs({separator: ''}) }}
-    </div>
-{% endblock %}
+<div class="container-fluid">
 {% block body %}
 {% endblock %}
+</div>
 <div class="container">
     <div class="col-lg-5">
-        {#{{ dump(app) }}#}
+
+        {{ dump() }}
     </div>
 </div>
 </body>

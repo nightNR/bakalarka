@@ -2,6 +2,7 @@
 
 namespace PubLeashBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as FOSUser;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -67,7 +68,7 @@ class User extends FOSUser
     protected $language;
 
     /**
-     * @var
+     * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="PubLeashBundle\Entity\Publication", inversedBy="authors")
      */
     protected $publications;
@@ -215,5 +216,12 @@ class User extends FOSUser
     public function getLanguage()
     {
         return $this->language;
+    }
+
+    public function addPublication(Publication $publication) {
+        if($this->publications === null) {
+            $this->publications = new ArrayCollection();
+        }
+        $this->publications[] = $publication;
     }
 }
