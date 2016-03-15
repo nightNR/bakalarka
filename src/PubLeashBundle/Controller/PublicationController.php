@@ -124,6 +124,8 @@ class PublicationController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $publication = new Entity\Publication();
+
+        $publication = $em->getRepository(Entity\Publication::class)->find(1);
         $form = $factory->create(PublicationType::class, $publication);
 
         $form->handleRequest($request);

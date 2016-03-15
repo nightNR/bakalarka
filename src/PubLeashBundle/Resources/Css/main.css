@@ -203,6 +203,10 @@ h3 .glyphicon {
     padding: 10px;
 }
 
+.hidden-entity-type-field {
+    margin-bottom: 15px;
+}
+
 /*.thumbnail {*/
     /*height: 380px;*/
 /*}*/

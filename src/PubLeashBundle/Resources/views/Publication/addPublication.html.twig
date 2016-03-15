@@ -6,10 +6,31 @@
         <h1 class="text-center">Add publication</h1>
         {{ form_start(form, {'method': 'post', 'action': path('publeash_publication_addpublication'), 'attr': {'class': 'publeash_publication_addpublication'}}) }}
         {{ form_widget(form) }}
+        {#{{ form_widget(form.title) }}#}
+        {#{{ form_widget(form.description) }}#}
+        {#{{ form_widget(form.language) }}#}
+        {#{% for author in form.authors %}#}
+            {#{{ form_widget(author) }}#}
+        {#{% endfor %}#}
+
         <div class="form-group">
             <input type="submit" id="_submit" name="_submit" value="{{ 'publication.add'|trans }}"
                    class="btn btn-primary btn-block"/>
         </div>
-        {{ form_end(form) }}
+        {{ form_end(form, { "render_rest": false}) }}
     </div>
+    <script type="text/javascript">
+        // keep track of how many email fields have been rendered
+        var emailCount = '{{ form.authors|length }}';
+
+        $(function () {
+
+            $("[data-trigger='delete']").on('click', deleteAction);
+
+            function deleteAction() {
+                var target = $(this).attr('data-target');
+                $('#'+target).remove();
+            }
+        })
+    </script>
 {% endblock %}
