@@ -48,9 +48,7 @@ class Publication
     public function getPublications($page = 1, $limit = 5) {
         $repository = $this->em->getRepository(\PubLeashBundle\Entity\Publication::class);
         $queryBuilder = $repository->createQueryBuilder('p')->orderBy('p.dateCreate', 'DESC');
-        $dateTime = new \DateTime("01/01/0001");
-        $queryBuilder->where('p.dateDelete <= :dateTimeZero');
-        $queryBuilder->setParameter('dateTimeZero', $dateTime);
+        $queryBuilder->where('p.dateDelete is null');
         if($user = $this->getUser()) {
             $queryBuilder->andWhere('p.isPublished = true OR :author MEMBER OF p.authors');
             $queryBuilder->setParameter('author', $user);

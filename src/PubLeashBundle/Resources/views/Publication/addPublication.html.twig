@@ -6,74 +6,21 @@
         <h1 class="text-center">Add publication</h1>
         {{ form_start(form, {'method': 'post', 'action': path('publeash_publication_addpublication'), 'attr': {'class': 'publeash_publication_addpublication'}}) }}
         {{ form_widget(form) }}
-        {#<div class="form-group" id="autocomplete">#}
-            {#<div class="col-sm-2"></div>#}
-            {#<div class="col-sm-10">#}
-                {#<div class="input-group">#}
-                {#<select class="form-control" id="select-author">#}
-                    {#<option value="">Select author...</option>#}
-                    {#{% for author in authors %}#}
-                        {#<option value="{{ author.id }}">{{ author.username }}</option>#}
-                    {#{% endfor %}#}
-                {#</select>#}
-                {#<span class="input-group-btn">#}
-                    {#<button class="btn btn-success" type="button"><i#}
-                            {#class="glyphicon glyphicon-plus" data-trigger="add" data-target="#select-author"></i></button>#}
-                {#</span>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
         <div class="form-group">
             <input type="submit" id="_submit" name="_submit" value="{{ 'publication.add'|trans }}"
                    class="btn btn-primary btn-block"/>
         </div>
         {{ form_end(form, { "render_rest": false}) }}
     </div>
-    {#<script type="text/javascript">#}
-        {#// keep track of how many email fields have been rendered#}
-        {#var authorsCount = '{{ form.authors|length }}';#}
-        {#var id = '{{ form.authors.vars.id }}';#}
-        {#var component_name = '{{ form.authors.vars.full_name }}';#}
-        {#var prototype = $('#publication_authors').attr('data-prototype');#}
-
-        {#$('#select-author').selectize({#}
-            {#create: false,#}
-            {#sortField: {#}
-                {#field: 'text',#}
-                {#direction: 'asc'#}
-            {#},#}
-            {#dropdownParent: 'body'#}
-        {#});#}
-
-        {#$(function () {#}
-
-            {#$("[data-trigger='delete']").on('click', deleteAction);#}
-
-            {#function deleteAction() {#}
-                {#var target = $(this).attr('data-target');#}
-                {#$('#'+target).remove();#}
-            {#}#}
-
-            {#$("[data-trigger='add']").on('click', addAction);#}
-
-            {#function addAction() {#}
-
-                {#var component = prototype.replace(/__ID__/g, id+'_'+authorsCount);#}
-
-                {#var option = $('#select-author').find('option[selected="selected"]');#}
-                {#var value = option.val();#}
-                {#var name = option.text();#}
-
-                {#component = component.replace(/__USERNAME__/g, name);#}
-                {#component = component.replace(/__VALUE__/g, value);#}
-                {#component = component.replace(/__COMPONENT_NAME__/g, component_name+'['+authorsCount+']');#}
-                {#console.log(component);#}
-                {#component = $.parseHTML(component);#}
-                {#$(component).find("[data-trigger='delete']").on('click', deleteAction);#}
-                {#$('#publication_authors').append(component);#}
-                {#authorsCount++;#}
-            {#}#}
-
-        {#})#}
-    {#</script>#}
+    <script type="text/javascript">
+        $('#publication_authors').selectize({
+            create: false,
+            plugins: ['remove_button'],
+            sortField: {
+                field: 'text',
+                direction: 'asc'
+            },
+            dropdownParent: 'body'
+        });
+    </script>
 {% endblock %}

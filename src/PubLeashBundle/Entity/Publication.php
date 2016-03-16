@@ -78,27 +78,10 @@ class Publication
 
     /**
      * @var
-     * @ORM\Column(name="date_delete", type="datetime")
+     * @ORM\Column(name="date_delete", type="datetime", nullable=true)
      */
     protected $dateDelete;
-
-    public function __construct()
-    {
-        $this->dateDelete = new \DateTime("01/01/0001");
-    }
-
-    /**
-     * @param $author
-     */
-    public function addAuthor(User $author)
-    {
-        if($this->authors === null) {
-            $this->authors = new ArrayCollection();
-        }
-        $author->addPublication($this);
-        $this->authors[] = $author;
-    }
-
+    
     /**
      * @return mixed
      */
@@ -242,46 +225,157 @@ class Publication
     }
 
 
-
-    public function computeIsPublished() {
+    public function computeIsPublished()
+    {
         $chapters = $this->getChapters();
         /**
          * @var Chapter $chapter
          */
-        foreach($chapters as $chapter) {
-            if($chapter->getIsPublished()) return true;
+        foreach ($chapters as $chapter) {
+            if ($chapter->getIsPublished()) return true;
         }
         return false;
     }
 
-    public function getPrettyUrlTitle() {
+    public function getPrettyUrlTitle()
+    {
 
-        return strtolower(preg_replace('/\s{1,}/', '-', preg_replace('/[^a-zA-Z0-9\s.]/','',iconv('UTF-8', 'ASCII//TRANSLIT', $this->title))));
+        return strtolower(preg_replace('/\s{1,}/', '-', preg_replace('/[^a-zA-Z0-9\s.]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $this->title))));
     }
 
-    public function delete() {
+    public function delete()
+    {
         $this->dateDelete = new \DateTime();
     }
 
-    public function isDeleted() {
+    public function isDeleted()
+    {
         return $this->dateDelete == null;
     }
 
-    public function getRank() {
+    public function getRank()
+    {
         $reviews = $this->getReviews();
         /**
          * @var Review $review
          */
         $sum = 0;
         $count = 0;
-        foreach($reviews as $review) {
-            if(empty($review->getReview())) {
+        foreach ($reviews as $review) {
+            if (empty($review->getReview())) {
                 $sum += 2 * $review->getRank();
                 $count++;
             }
         }
-        return $count?((ceil($sum / $count)) / 2):0;
+        return $count ? ((ceil($sum / $count)) / 2) : 0;
     }
 
+
+    /**
+     * Set dateDelete
+     *
+     * @param \DateTime $dateDelete
+     *
+     * @return Publication
+     */
+    public function setDateDelete($dateDelete)
+    {
+        $this->dateDelete = $dateDelete;
+
+        return $this;
+    }
+
+    /**
+     * Get dateDelete
+     *
+     * @return \DateTime
+     */
+    public function getDateDelete()
+    {
+        return $this->dateDelete;
+    }
+
+    /**
+     * Add author
+     *
+     * @param User $author
+     *
+     * @return Publication
+     */
+    public function addAuthor(User $author)
+    {
+        $author->addPublication($this);
+        $this->authors[] = $author;
+
+        return $this;
+    }
+
+    /**
+     * Remove author
+     *
+     * @param User $author
+     */
+    public function removeAuthor(User $author)
+    {
+        $this->authors->removeElement($author);
+    }
+
+    /**
+     * Add chapter
+     *
+     * @param Chapter $chapter
+     *
+     * @return Publication
+     */
+    public function addChapter(Chapter $chapter)
+    {
+        $this->chapters[] = $chapter;
+
+        return $this;
+    }
+
+    /**
+     * Remove chapter
+     *
+     * @param Chapter $chapter
+     */
+    public function removeChapter(Chapter $chapter)
+    {
+        $this->chapters->removeElement($chapter);
+    }
+
+    /**
+     * Add review
+     *
+     * @param Review $review
+     *
+     * @return Publication
+     */
+    public function addReview(Review $review)
+    {
+        $this->reviews[] = $review;
+
+        return $this;
+    }
+
+    /**
+     * Remove review
+     *
+     * @param Review $review
+     */
+    public function removeReview(Review $review)
+    {
+        $this->reviews->removeElement($review);
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->authors = new ArrayCollection();
+        $this->chapters = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
+    }
 
 }

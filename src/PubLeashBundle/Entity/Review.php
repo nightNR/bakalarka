@@ -210,4 +210,59 @@ class Review
 
 
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->reviews = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set isHidden
+     *
+     * @param boolean $isHidden
+     *
+     * @return Review
+     */
+    public function setIsHidden($isHidden)
+    {
+        $this->isHidden = $isHidden;
+
+        return $this;
+    }
+
+    /**
+     * Get isHidden
+     *
+     * @return boolean
+     */
+    public function getIsHidden()
+    {
+        return $this->isHidden;
+    }
+
+    /**
+     * Add review
+     *
+     * @param \PubLeashBundle\Entity\Review $review
+     *
+     * @return Review
+     */
+    public function addReview(\PubLeashBundle\Entity\Review $review)
+    {
+        $this->reviews[] = $review;
+
+        return $this;
+    }
+
+    /**
+     * Remove review
+     *
+     * @param \PubLeashBundle\Entity\Review $review
+     */
+    public function removeReview(\PubLeashBundle\Entity\Review $review)
+    {
+        $this->reviews->removeElement($review);
+    }
 }
