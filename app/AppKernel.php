@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new Ornicar\GravatarBundle\OrnicarGravatarBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new KMS\FroalaEditorBundle\KMSFroalaEditorBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
 
             new PubLeashBundle\PubLeashBundle(),
             new UserBundle\UserBundle(),

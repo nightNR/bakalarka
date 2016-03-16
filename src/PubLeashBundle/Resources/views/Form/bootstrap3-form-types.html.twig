@@ -1,23 +1,26 @@
 {% use 'bootstrap_3_horizontal_layout.html.twig' %}
 
-{% block hidden_entity_widget %}
+{#{% block hidden_entity_widget %}#}
     {#{{ dump() }}#}
-    {% if value is empty %}
-        <div class="input-group hidden-entity-type-field" id="{{ id }}">
-            <p class="form-control">{{ value.username }}</p>
-
-            <input type="hidden" value="{{ value.id }}" name="{{ full_name }}">
-        </div>
-    {% else %}
-        <div class="input-group hidden-entity-type-field" id="{{ id }}">
-            <p class="form-control">{{ value.username }}</p>
-            {% if (not (attr.allowDeleteOnlyRegistered) or ((attr.allowDeleteOnlyRegistered == true) and app.user)) == true %}
-                <span class="input-group-btn">
-                <button class="btn btn-danger" type="button" data-trigger="delete" data-target="{{ id }}"><i
-                            class="glyphicon glyphicon-remove"></i></button>
-                </span>
-            {% endif %}
-            <input type="hidden" value="{{ value.id }}" name="{{ full_name }}">
-        </div>
-    {% endif %}
-{% endblock %}
+    {#{% if value is empty %}#}
+        {#<div class="input-group hidden-entity-type-field" id="__ID__">#}
+            {#<p class="form-control">__USERNAME__</p>#}
+            {#<span class="input-group-btn">#}
+                {#<button class="btn btn-danger" type="button" data-trigger="delete" data-target="__ID__"><i#}
+                            {#class="glyphicon glyphicon-remove"></i></button>#}
+            {#</span>#}
+            {#<input type="hidden" value="__VALUE__" name="__COMPONENT_NAME__">#}
+        {#</div>#}
+    {#{% else %}#}
+        {#<div class="input-group hidden-entity-type-field" id="{{ id }}">#}
+            {#<p class="form-control">{{ value.username }}</p>#}
+            {#{% if (not (attr.allowDeleteOnlyRegistered) or ((attr.allowDeleteOnlyRegistered == true) and app.user)) == true %}#}
+                {#<span class="input-group-btn">#}
+                {#<button class="btn btn-danger" type="button" data-trigger="delete" data-target="{{ id }}"><i#}
+                            {#class="glyphicon glyphicon-remove"></i></button>#}
+                {#</span>#}
+            {#{% endif %}#}
+            {#<input type="hidden" value="{{ value.id }}" name="{{ full_name }}">#}
+        {#</div>#}
+    {#{% endif %}#}
+{#{% endblock %}#}

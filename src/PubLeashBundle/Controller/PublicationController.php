@@ -125,7 +125,6 @@ class PublicationController extends Controller
 
         $publication = new Entity\Publication();
 
-        $publication = $em->getRepository(Entity\Publication::class)->find(1);
         $form = $factory->create(PublicationType::class, $publication);
 
         $form->handleRequest($request);
@@ -143,6 +142,7 @@ class PublicationController extends Controller
         }
         return [
             'form' => $form->createView(),
+            'authors' => $this->get('author')->getAvailableAuthors()
         ];
     }
 
