@@ -30,17 +30,17 @@ class PublicationType extends AbstractType
                     'label' => false
                 ]
             )
-            ->add('authors', CollectionType::class, [
-                'entry_type' => HiddenEntityType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'prototype' => true,
-                'entry_options' => [
-                    'attr' => [
-                        'allowDeleteOnlyRegistered' => true
-                    ]
-                ]
-            ])
+//            ->add('authors', CollectionType::class, [
+//                'entry_type' => HiddenEntityType::class,
+//                'allow_add' => true,
+//                'allow_delete' => true,
+//                'prototype' => true,
+//                'entry_options' => [
+//                    'attr' => [
+//                        'allowDeleteOnlyRegistered' => true
+//                    ]
+//                ]
+//            ])
         ;
     }
     
