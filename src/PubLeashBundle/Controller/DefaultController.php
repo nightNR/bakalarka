@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use PubLeashBundle\Service\GeoIP;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class DefaultController extends Controller
 {
@@ -37,8 +38,11 @@ class DefaultController extends Controller
      */
     public function adminAction()
     {
-        $p1 = new Process('cd /home/nightnr/www/pub-leash/ && git pull origin master');
+        $p1 = new Process('cd /home/night/bakalarka/ && git pull origin master');
         $p1->run();
+	if (!$p1->isSuccessful()) {
+    		throw new ProcessFailedException($p1);
+	}
         echo $p1->getOutput();
         return new Response();
     }
