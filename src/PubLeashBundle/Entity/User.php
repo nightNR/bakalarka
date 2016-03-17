@@ -277,7 +277,9 @@ class User extends FOSUser
      */
     public function addPublication(Publication $publication)
     {
-        $this->publications[] = $publication;
+        if(!$this->publications->contains($publication)){
+            $this->publications[] = $publication;
+        }
 
         return $this;
     }

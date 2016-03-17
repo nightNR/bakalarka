@@ -29,14 +29,28 @@
 {% block navigation %}
     {{ include("PubLeashBundle:navigation.html.twig") }}
 {% endblock %}
-<div class="container-fluid">
-{% block body %}
-{% endblock %}
-</div>
-<div class="container">
-    <div class="col-lg-5">
+<div id="wrapper">
+    <div class="row">
+        <div class="container-fluid">
+            {% block side_nav %}
+            {% endblock %}
+            <div class="">
+                {% block breadcrumbs %}
+                    {{ include("PubLeashBundle:breadbrumbs.html.twig") }}
+                {% endblock %}
+                <div class="container-fluid">
+                    {% block body %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
 
-        {#{{ dump() }}#}
+    <div class="container">
+        <div class="col-lg-5">
+
+            {#{{ dump() }}#}
+        </div>
     </div>
 </div>
 </body>
@@ -53,4 +67,46 @@
         {% endif %}
         {% set rank = (rank - 1) %}
     {% endfor %}
+{% endmacro %}
+
+{% macro reviews(data) %}
+    <ul class="media-list">
+        {% for review in data %}
+            <li class="media panel panel-default review">
+                <div class="media-left media-top">
+                    <a href="#">
+                        <img class="media-object" src="{{ gravatar(review.author.email, 64, 'g') }}"
+                             alt="{{ review.author.username }}">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">{{ review.author.username }}{{ _self.stars(review.rank) }}
+                        <small>{{ review.getDateCreate }}</small>
+                    </h4>
+                    <p>{{ review.text }}</p>
+                </div>
+                {% set subreviews = review.reviews %}
+                {% if subreviews is not empty %}
+                    <ul class="media-list">
+                        {% for subreview in subreviews %}
+                            <li class="media panel panel-default review">
+                                <div class="media-left media-top">
+                                    <a href="#">
+                                        <img class="media-object" src="{{ gravatar(subreview.author.email, 64, 'g') }}"
+                                             alt="{{ subreview.author.username }}">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading">{{ subreview.author.username }}
+                                        <small>{{ review.getDateCreate }}</small>
+                                    </h4>
+                                    <p>{{ subreview.text }}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
 {% endmacro %}

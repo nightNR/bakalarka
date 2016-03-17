@@ -21,7 +21,7 @@ class ChapterType extends AbstractType
         $builder
             ->add('title', TextType::class, array('label' => false, 'translation_domain' => 'PubLeashBundle', 'attr' => ['placeholder' => 'publication.title']))
             ->add('content', FroalaEditorType::class, ['attr' => ['class' => 'add-chapter-content-editor']])
-            ->add('isPublished', CheckboxType::class)
+            ->add('isPublished', CheckboxType::class, ['required' => false])
         ;
     }
     

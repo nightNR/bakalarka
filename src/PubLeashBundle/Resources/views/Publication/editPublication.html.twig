@@ -3,13 +3,24 @@
 
 {% block body %}
     <div class="well col-lg-5">
-        <h1 class="text-center">Add publication</h1>
+        <h1 class="text-center">Edit publication</h1>
         {{ form_start(form, {'method': 'post', 'action': path('publeash_publication_editpublication', {publicationId: params.publicationId, name: params.name}), 'attr': {'class': 'publeash_publication_editpublication'}}) }}
         {{ form_widget(form) }}
         <div class="form-group">
             <input type="submit" id="_submit" name="_submit" value="{{ 'publication.edit'|trans }}"
                    class="btn btn-primary btn-block"/>
         </div>
-        {{ form_end(form) }}
+        {{ form_end(form, { "render_rest": false}) }}
     </div>
+    <script type="text/javascript">
+        $('#publication_authors').selectize({
+            create: false,
+            plugins: ['remove_button'],
+            sortField: {
+                field: 'text',
+                direction: 'asc'
+            },
+            dropdownParent: 'body'
+        });
+    </script>
 {% endblock %}

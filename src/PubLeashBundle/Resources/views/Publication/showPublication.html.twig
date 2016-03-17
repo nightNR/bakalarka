@@ -6,7 +6,38 @@
     - {{ publication.title }}
 {% endblock %}
 
+{% block side_nav %}
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+        <ul class="nav sidebar-nav">
+            {#<li>#}
+                {#<a href="#"><i class="glyphicon glyphicon-home"></i> </a>#}
+            {#</li>#}
+            {% if publication_service.allowedEdit(publication) %}
+                <li data-toggle="tooltip" data-placement="right" title="Edit publication">
+                    <a href="{{ path('publeash_publication_editpublication', {publicationId: publication.id, name: publication.prettyUrlTitle}) }}">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>
+                </li>
+            {% endif %}
+            {% if publication_service.allowedEdit(publication) %}
+                <li data-toggle="tooltip" data-placement="right" title="Add publication">
+                    <a href="{{ path('publeash_publication_addchapter', {publicationId: publication.id}) }}">
+                        <i class="glyphicon glyphicon-plus"></i>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    <script type="application/javascript">
+        $(document).ready(function () {
+            $('#wrapper').css('padding-left', '55px');
+            $('#sidebar-wrapper').css('width', '55px');
+        });
+    </script>
+{% endblock %}
+
 {% block body %}
+    <!-- /#sidebar-wrapper -->
     <div class="row publication-show">
         <div class="container-fluid">
             {% if not publication_service.allowedShow(publication) %}
@@ -39,76 +70,34 @@
                 </div>
                 <div class="page-header">
                     <h3>{{ 'publication.chapters.available'|trans }}<span>
-                            {% if publication_service.allowedEdit(publication) %}
-                            <a href="{{ path('publeash_publication_addchapter', {publicationId: publication.id}) }}"
-                               class="btn btn-success" style="margin-left: 10px">
-                                <i class="glyphicon glyphicon-plus"></i>
-                            </a>
-                            {% endif %}
                         </span>
                     </h3>
                 </div>
-                {% set chapters = publication.chapters %}
-                {% for chapter in chapters %}
-                    <div class="bs-callout bs-callout-info">
-                        <div class="page-header">
-                            <h3>{{ chapter.title }}
-                                {{ layout.stars(chapter.rank) }}
-                        </div>
-                        <div class="row author">
-                            <span class="text-right col-md-6 col-md-offset-6">
-                                {{ 'publication.date_create'|trans }}: {{ chapter.dateCreate }}
-                                {{ 'publication.date_update'|trans }}: {{ chapter.dateUpdate }}
-                            </span>
-                        </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                    {% set chapters = publication.chapters %}
+                    {% for chapter in chapters %}
+                        <div class="bs-callout bs-callout-info" onclick="location.href='{{ path('publeash_publication_showpublicationchapter', { "publicationId": publication.id, "chapterId": chapter.id }) }}'">
+                            <div class="page-header">
+                                <h3>{{ chapter.title }}
+                                    {{ layout.stars(chapter.rank) }}
+                            </div>
+                            <div class="row author">
+                                <span class="text-right col-md-6 col-md-offset-6">
+                                    {{ 'publication.date_create'|trans }}: {{ chapter.dateCreate }}
+                                    {{ 'publication.date_update'|trans }}: {{ chapter.dateUpdate }}
+                                </span>
+                            </div>
 
-                        {{ chapter.preview | raw }}
+                            {{ chapter.preview | raw }}
+                        </div>
+                    {% endfor %}
                     </div>
-                {% endfor %}
-                <div class="page-header">
-                    <h3>{{ 'publication.reviews'|trans }}<span>
-                            {% if publication_service.allowedEdit(publication) %}
-                                <a href="{{ path('publeash_publication_addchapter', {publicationId: publication.id}) }}"
-                                   class="btn btn-success" style="margin-left: 10px">
-                                    <i class="glyphicon glyphicon-plus"></i>
-                                </a>
-                            {% endif %}
-                        </span>
-                    </h3>
                 </div>
-                <ul class="media-list">
-                {% for review in publication.reviews %}
-                        <li class="media panel panel-default review">
-                            <div class="media-left media-top">
-                                <a href="#">
-                                    <img class="media-object" src="{{ gravatar(review.author.email, 64, 'g') }}" alt="{{ review.author.username }}">
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">{{ review.author.username }}{{ layout.stars(review.rank) }} <small>{{ review.getDateCreate }}</small></h4>
-                                <p>{{ review.text }}</p>
-                            </div>
-                                {% set subreviews = review.reviews %}
-                                {% if subreviews is not empty %}
-                                    <ul class="media-list">
-                                    {% for subreview in subreviews %}
-                                        <li class="media panel panel-default review">
-                                            <div class="media-left media-top">
-                                                <a href="#">
-                                                    <img class="media-object" src="{{ gravatar(subreview.author.email, 64, 'g') }}" alt="{{ subreview.author.username }}">
-                                                </a>
-                                            </div>
-                                            <div class="media-body">
-                                                <h4 class="media-heading">{{ subreview.author.username }} <small>{{ review.getDateCreate }}</small></h4>
-                                                <p>{{ subreview.text }}</p>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                    </ul>
-                                {% endif %}
-                        </li>
-                {% endfor %}
-                </ul>
+                <div class="page-header">
+                    <h3>{{ 'publication.reviews'|trans }}</h3>
+                </div>
+                {{ layout.reviews(publication.reviews) }}
             {% endif %}
         </div>
     </div>

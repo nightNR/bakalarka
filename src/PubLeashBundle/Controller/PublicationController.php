@@ -45,21 +45,18 @@ class PublicationController extends Controller
     }
 
     /**
-     * @Route("/publication/{publicationId}/read/chapter/list/{page}", defaults={"page": "1"}, requirements={"publicationId": "\d+", "page": "\d+"})
-     * @Method("GET")
-     */
-    public function showPublicationChaptersAction($publicationId, $page)
-    {
-
-    }
-
-    /**
      * @Route("/publication/{publicationId}/read/chapter/{chapterId}", defaults={"chapterId": "1"}, requirements={"publicationId": "\d+", "chapterId": "\d+"})
      * @Method("GET")
+     * @Template()
      */
     public function showPublicationChapterAction($publicationId, $chapterId)
     {
-
+        $em = $this->getDoctrine()->getManager();
+        $chapter = $em->getRepository(Entity\Chapter::class)->find($chapterId);
+        return [
+            'chapter' => $chapter,
+            'publication_service' => $this->get('publication')
+        ];
     }
 
     /**
@@ -141,7 +138,7 @@ class PublicationController extends Controller
     }
 
     /**
-     * @Route("/publication/edit/{publicationId}/{name}")
+     * @Route("/publication/edit/publication/{publicationId}/{name}")
      * Method("GET")
      * @Template()
      * @return Response
@@ -152,7 +149,7 @@ class PublicationController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         /**
-         * @var Publication $publication;
+         * @var Entity\Publication $publication;
          */
         $publication = $em->getRepository(Entity\Publication::class)->find($publicationId);
 
@@ -189,7 +186,7 @@ class PublicationController extends Controller
 
     /**
      * @Route("/publication/add/{publicationId}/chapter")
-     * @Template()
+     * @Template("PubLeashBundle:Chapter:addChapter.html.twig")
      * @param Request $request
      * @param $publicationId
      * @return array
@@ -213,11 +210,46 @@ class PublicationController extends Controller
             $em->persist($chapter);
             $em->flush();
 
-            return $this->redirectToRoute('publeash_publication_publication');
+            return $this->redirectToRoute('publeash_publication_showpublicationchapter',[
+                'publicationId' => $publicationId,
+                'chapterId' => $chapter->getId()
+            ]);
         }
         return [
             'form' => $form->createView(),
-            'publication_id' => $publicationId
+            'publication_id' => $publicationId,
+        ];
+    }
+
+    /**
+     * @Route("/publication/edit/chapter/{chapterId}")
+     * @Template("PubLeashBundle:Chapter:editChapter.html.twig")
+     * @param Request $request
+     * @return array
+     */
+    public function editChapterAction(Request $request, $chapterId)
+    {
+        $factory = $this->get('form.factory');
+        $em = $this->getDoctrine()->getManager();
+
+
+        /** @var Entity\Chapter $chapter */
+        $chapter = $em->getRepository(Entity\Chapter::class)->find($chapterId);
+
+        $form = $factory->create(ChapterType::class, $chapter);
+
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+
+            $em->flush();
+
+            return $this->redirectToRoute('publeash_publication_showpublicationchapter', ['publicationId' => $chapter->getPublication()->getId(), 'chapterId' => $chapter->getId()]);
+        }
+        return [
+            'form' => $form->createView(),
+            'chapter_id' => $chapterId,
         ];
     }
 

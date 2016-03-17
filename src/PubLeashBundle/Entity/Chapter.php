@@ -56,7 +56,7 @@ class Chapter
 
     /**
      * @var
-     * @ORM\Column(name="is_published", type="boolean")
+     * @ORM\Column(name="is_published", type="boolean", options={"default": false})
      */
     protected $isPublished;
 
@@ -77,7 +77,7 @@ class Chapter
     }
 
     /**
-     * @return mixed
+     * @return Publication
      */
     public function getPublication()
     {

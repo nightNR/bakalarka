@@ -1,0 +1,60 @@
+{% trans_default_domain 'PubLeashBundle' %}
+{% extends '@PubLeash/layout.html.twig' %}
+{% import '@PubLeash/layout.html.twig' as layout %}
+
+{% block body %}
+    <div class="row publication-show">
+        <div class="container-fluid">
+            {% if not publication_service.allowedShow(chapter.publication) %}
+                <div class="page-header">
+                    <h1>{{ 'publication.show.noauthor'|trans }}</h1>
+                </div>
+            {% else %}
+                <div class="page-header">
+                    <h1>{{ chapter.title }}
+                        {% if publication_service.allowedEdit(chapter.publication) %}
+                            <a href="{{ path('publeash_publication_editchapter', {chapterId: chapter.id}) }}"
+                               class="btn btn-success" style="margin-left: 10px">
+                                <i class="glyphicon glyphicon-edit"></i>
+                            </a>
+                        {% endif %}
+                        {{ layout.stars(chapter.rank) }}
+                    </h1>
+
+                </div>
+                <div class="author row">
+                    <span class="text-left col-md-6">
+                        {{ 'publication.author'|trans }}:
+                        {% for author in chapter.publication.authors %}
+                            {{ author.username }} {{ (loop.last == false) ? ',' : '' }}
+                        {% endfor %}
+                    </span>
+                    <span class="text-right col-md-6">
+                        {{ 'publication.date_create'|trans }}: {{ chapter.dateCreate }}
+                        {{ 'publication.date_update'|trans }}: {{ chapter.dateUpdate }}
+                    </span>
+                </div>
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="fr-view">
+                                    {{ chapter.content | raw }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-header">
+                    <h3>{{ 'publication.reviews'|trans }}</h3>
+                </div>
+                {{ layout.reviews(chapter.reviews) }}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
