@@ -69,7 +69,7 @@ class User extends FOSUser
 
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="PubLeashBundle\Entity\Publication")
+     * @ORM\ManyToMany(targetEntity="PubLeashBundle\Entity\Publication", inversedBy="authors")
      */
     protected $publications;
 

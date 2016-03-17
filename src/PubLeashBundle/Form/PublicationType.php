@@ -42,14 +42,14 @@ class PublicationType extends AbstractType
         ;
 
 
-//        $builder->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
-//            /** @var Publication $publication */
-//            $publication = $event->getData();
-//            /** @var User $author */
-//            foreach($publication->getAuthors() as $author){
-//                $author->addPublication($publication);
-//            }
-//        });
+        $builder->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
+            /** @var Publication $publication */
+            $publication = $event->getData();
+            /** @var User $author */
+            foreach($publication->getAuthors() as $author){
+                $author->addPublication($publication);
+            }
+        });
     }
     
     /**

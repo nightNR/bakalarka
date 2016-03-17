@@ -67,12 +67,12 @@ class MainMenu implements ContainerAwareInterface
          */
         $requestStack = $this->container->get('request_stack');
         $params = $requestStack->getCurrentRequest()->attributes;
-        dump($params);
+//        dump($params);
         $menu = $factory->createItem('root');
         $menu->setChildrenAttribute('class', 'breadcrumb');
         $menu->addChild('trans.home', array('route' => 'publeash_default_index'));
         $route = $requestStack->getCurrentRequest()->get('_route');
-        dump($route);
+//        dump($route);
         if(isset(self::$BREADCRUMB_MAP[$route])) {
             foreach(self::$BREADCRUMB_MAP[$route] as $menuItem) {
                 $routeParams = [];

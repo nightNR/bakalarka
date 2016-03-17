@@ -125,17 +125,14 @@ class PublicationController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $publication = new Entity\Publication();
-        dump($request);
         $form = $factory->create(PublicationType::class, $publication);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
-//            dump($publication);
-//            exit;
             $em->persist($publication);
             $em->flush();
-//            return $this->redirectToRoute('publeash_publication_publication');
+            return $this->redirectToRoute('publeash_publication_publication');
         }
         return [
             'form' => $form->createView(),
