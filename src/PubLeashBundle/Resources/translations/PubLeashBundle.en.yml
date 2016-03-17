@@ -24,12 +24,14 @@ publication:
   edit: 'Edit'
   date_create: 'Written'
   date_update: 'Last edit'
+  reviews: 'Reviews'
   confirm:
       delete:
           claim: 'Do you really want to delete {publicationTitle}?'
           title: 'Delete confirmation'
   show:
     notauthor: 'Only author can read unpublished publications!'
+    empty: 'There are no publications available within given criteria!'
   chapters:
     available: 'Available chapters'
     add: 'Add Chapter'

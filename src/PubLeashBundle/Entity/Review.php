@@ -9,6 +9,7 @@
 namespace PubLeashBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PubLeashBundle\Entity\Traits\DateUpdateTrait;
 
 /**
  * Class Review
@@ -16,9 +17,12 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="review")
  * @ORM\Entity()
+ * @ORM\HasLifecycleCallbacks()
  */
 class Review
 {
+
+    use DateUpdateTrait;
     /**
      * @var int
      * @ORM\Column(name="id", type="integer")
@@ -47,7 +51,7 @@ class Review
 
     /**
      * @var
-     * @ORM\Column(name="rank", type="smallint")
+     * @ORM\Column(name="rank", type="decimal", precision=2, scale=1)
      */
     protected $rank;
 
@@ -63,6 +67,18 @@ class Review
      * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\Review", mappedBy="review")
      */
     protected $reviews;
+
+    /**
+     * @var
+     * @ORM\ManyToOne(targetEntity="PubLeashBundle\Entity\User", inversedBy="reviews")
+     */
+    protected $author;
+
+    /**
+     * @var
+     * @ORM\Column(name="is_hidden", type="boolean")
+     */
+    protected $isHidden;
 
     /**
      * @return int
@@ -176,5 +192,77 @@ class Review
         $this->reviews = $reviews;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
 
+    /**
+     * @param mixed $author
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+    }
+
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->reviews = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set isHidden
+     *
+     * @param boolean $isHidden
+     *
+     * @return Review
+     */
+    public function setIsHidden($isHidden)
+    {
+        $this->isHidden = $isHidden;
+
+        return $this;
+    }
+
+    /**
+     * Get isHidden
+     *
+     * @return boolean
+     */
+    public function getIsHidden()
+    {
+        return $this->isHidden;
+    }
+
+    /**
+     * Add review
+     *
+     * @param \PubLeashBundle\Entity\Review $review
+     *
+     * @return Review
+     */
+    public function addReview(\PubLeashBundle\Entity\Review $review)
+    {
+        $this->reviews[] = $review;
+
+        return $this;
+    }
+
+    /**
+     * Remove review
+     *
+     * @param \PubLeashBundle\Entity\Review $review
+     */
+    public function removeReview(\PubLeashBundle\Entity\Review $review)
+    {
+        $this->reviews->removeElement($review);
+    }
 }

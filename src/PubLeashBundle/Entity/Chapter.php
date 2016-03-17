@@ -166,9 +166,44 @@ class Chapter
          * @var Review $review
          */
         $sum = 0;
+        $count = 0;
         foreach($reviews as $review) {
-            $sum += 2*$review->getRank();
+            if(empty($review->getReview())) {
+                $sum += 2 * $review->getRank();
+                $count++;
+            }
         }
-        return count($reviews)?((ceil($sum / count($reviews))) / 2):0;
+        return $count?((ceil($sum / $count)) / 2):0;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->reviews = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add review
+     *
+     * @param \PubLeashBundle\Entity\Review $review
+     *
+     * @return Chapter
+     */
+    public function addReview(\PubLeashBundle\Entity\Review $review)
+    {
+        $this->reviews[] = $review;
+
+        return $this;
+    }
+
+    /**
+     * Remove review
+     *
+     * @param \PubLeashBundle\Entity\Review $review
+     */
+    public function removeReview(\PubLeashBundle\Entity\Review $review)
+    {
+        $this->reviews->removeElement($review);
     }
 }

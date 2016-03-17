@@ -73,6 +73,12 @@ class User extends FOSUser
      */
     protected $publications;
 
+    /**
+     * @var
+     * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\Review", mappedBy="author")
+     */
+    protected $reviews;
+
 
     /**
      * Set firstName
@@ -218,10 +224,71 @@ class User extends FOSUser
         return $this->language;
     }
 
-    public function addPublication(Publication $publication) {
-        if($this->publications === null) {
-            $this->publications = new ArrayCollection();
-        }
+    /**
+     * Get publications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPublications()
+    {
+        return $this->publications;
+    }
+
+    /**
+     * Add review
+     *
+     * @param \PubLeashBundle\Entity\Review $review
+     *
+     * @return User
+     */
+    public function addReview(\PubLeashBundle\Entity\Review $review)
+    {
+        $this->reviews[] = $review;
+
+        return $this;
+    }
+
+    /**
+     * Remove review
+     *
+     * @param \PubLeashBundle\Entity\Review $review
+     */
+    public function removeReview(\PubLeashBundle\Entity\Review $review)
+    {
+        $this->reviews->removeElement($review);
+    }
+
+    /**
+     * Get reviews
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReviews()
+    {
+        return $this->reviews;
+    }
+
+    /**
+     * Add publication
+     *
+     * @param Publication $publication
+     *
+     * @return User
+     */
+    public function addPublication(Publication $publication)
+    {
         $this->publications[] = $publication;
+
+        return $this;
+    }
+
+    /**
+     * Remove publication
+     *
+     * @param Publication $publication
+     */
+    public function removePublication(Publication $publication)
+    {
+        $this->publications->removeElement($publication);
     }
 }

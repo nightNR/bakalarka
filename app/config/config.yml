@@ -40,8 +40,9 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-    form_themes: ['bootstrap_3_layout.html.twig']
-
+    form_themes:
+#          - 'PubLeashBundle:Form:bootstrap3-form-types.html.twig'
+           - 'bootstrap_3_layout.html.twig'
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -113,7 +114,7 @@ assetic:
             bootstrap_fonts_woff2:
                                     inputs:
                                         - '%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.woff2'
-                                    output: fonts/glyphicons-halflings-regular.woff
+                                    output: fonts/glyphicons-halflings-regular.woff2
             bootstrap_fonts_ttf:
                         inputs:
                             - '%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.ttf'
@@ -150,3 +151,4 @@ knp_menu:
 kms_froala_editor:
     language: "en"
     height: 500
+    pluginsDisabled: [ "save" ]

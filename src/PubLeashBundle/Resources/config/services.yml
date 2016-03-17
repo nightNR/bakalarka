@@ -14,3 +14,11 @@ services:
   publication:
     class: PubLeashBundle\Service\Publication
     autowire: true
+
+  review:
+    class: PubLeashBundle\Service\Review
+    autowire: true
+
+  author:
+    class: PubLeashBundle\Service\Author
+    autowire: true

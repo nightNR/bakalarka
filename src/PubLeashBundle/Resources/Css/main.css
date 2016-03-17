@@ -126,7 +126,12 @@ body {
     display: block;
     margin-top: -10px;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+h1, h2, h3 {
+    overflow: hidden;
 }
 
 /* CSS used here will be applied after bootstrap.css */
@@ -158,6 +163,12 @@ h3 .glyphicon {
     color: #ff9100;
 }
 
+.star-color-empty {
+    color: #ffe6e6;
+}
+
+.icon-star-empty.icon-star-half:after { content: '\f006'; text-indent: -.35em;}
+
 .add-color {
     color: #00CC00;
 }
@@ -186,6 +197,15 @@ h3 .glyphicon {
 
 .add-chapter-content-editor {
     min-height: 600px;
+}
+
+.media-list .review {
+    margin: 10px;
+    padding: 10px;
+}
+
+.hidden-entity-type-field {
+    margin-bottom: 15px;
 }
 
 /*.thumbnail {*/

@@ -10,6 +10,7 @@ namespace PubLeashBundle\Controller;
 
 
 use PubLeashBundle\Entity;
+use PubLeashBundle\Entity\User;
 use PubLeashBundle\Form\ChapterType;
 use PubLeashBundle\Form\PublicationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -33,14 +34,13 @@ class PublicationController extends Controller
 
         $paginator = $publicationService->getPublications($page, $limit);
 
-//        $result = $paginator->getIterator();
-
         $maxPages = ceil($paginator->count() / $limit);
 
         return [
             'paginator' => $paginator,
             'max_pages' => $maxPages,
             'current_page' => $page,
+            'publication_service' => $publicationService
         ];
     }
 
@@ -69,12 +69,14 @@ class PublicationController extends Controller
      */
     public function showPublicationAction($publicationId)
     {
+        $publicationService = $this->get('publication');
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository(Entity\Publication::class);
 
         $publication = $repository->find($publicationId);
         return [
-            'publication' => $publication
+            'publication' => $publication,
+            'publication_service' => $publicationService
         ];
     }
 
@@ -114,7 +116,6 @@ class PublicationController extends Controller
 
     /**
      * @Route("/publication/add/")
-     * Method("GET")
      * @Template()
      * @return Response
      */
@@ -129,18 +130,13 @@ class PublicationController extends Controller
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
-            $user = $this->get('security.token_storage')->getToken()->getUser();
-//            dump($user);
-            $publication->addAuthor($user);
-
-
             $em->persist($publication);
             $em->flush();
-
             return $this->redirectToRoute('publeash_publication_publication');
         }
         return [
             'form' => $form->createView(),
+            'authors' => $this->get('author')->getAvailableAuthors()
         ];
     }
 

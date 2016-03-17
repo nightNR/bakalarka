@@ -1,5 +1,6 @@
 {% trans_default_domain 'PubLeashBundle' %}
 {% extends '@PubLeash/layout.html.twig' %}
+{% import '@PubLeash/layout.html.twig' as layout %}
 
 {% block title %}
     - {{ publication.title }}
@@ -8,23 +9,14 @@
 {% block body %}
     <div class="row publication-show">
         <div class="container-fluid">
-            {% if app.user and app.user not in publication.authors %}
+            {% if not publication_service.allowedShow(publication) %}
                 <div class="page-header">
                     <h1>{{ 'publication.show.noauthor'|trans }}</h1>
                 </div>
             {% else %}
                 <div class="page-header">
                     <h1>{{ publication.title }}
-                        {% set stars = publication.rank %}
-                        {% for i in 1..5 %}
-                            {% if stars >= 1 %}
-                                <i class="glyphicon glyphicon-star star-color"></i>
-                            {% elseif stars > 0 %}
-                                <i class="glyphicon glyphicon-star star-color half"></i>
-                            {% else %}
-                                <i class="glyphicon glyphicon-star-empty star-color"></i>
-                            {% endif %}
-                        {% endfor %}
+                        {{ layout.stars(publication.rank) }}
                     </h1>
 
                 </div>
@@ -47,10 +39,12 @@
                 </div>
                 <div class="page-header">
                     <h3>{{ 'publication.chapters.available'|trans }}<span>
+                            {% if publication_service.allowedEdit(publication) %}
                             <a href="{{ path('publeash_publication_addchapter', {publicationId: publication.id}) }}"
                                class="btn btn-success" style="margin-left: 10px">
                                 <i class="glyphicon glyphicon-plus"></i>
                             </a>
+                            {% endif %}
                         </span>
                     </h3>
                 </div>
@@ -58,16 +52,8 @@
                 {% for chapter in chapters %}
                     <div class="bs-callout bs-callout-info">
                         <div class="page-header">
-                            <h3>{{ chapter.title }}{% set stars = chapter.rank %}
-                                {% for i in 1..5 %}
-                                    {% if stars >= 1 %}
-                                        <i class="glyphicon glyphicon-star star-color"></i>
-                                    {% elseif stars > 0 %}
-                                        <i class="glyphicon glyphicon-star star-color half"></i>
-                                    {% else %}
-                                        <i class="glyphicon glyphicon-star-empty star-color"></i>
-                                    {% endif %}
-                                {% endfor %}</h3>
+                            <h3>{{ chapter.title }}
+                                {{ layout.stars(chapter.rank) }}
                         </div>
                         <div class="row author">
                             <span class="text-right col-md-6 col-md-offset-6">
@@ -79,6 +65,50 @@
                         {{ chapter.preview | raw }}
                     </div>
                 {% endfor %}
+                <div class="page-header">
+                    <h3>{{ 'publication.reviews'|trans }}<span>
+                            {% if publication_service.allowedEdit(publication) %}
+                                <a href="{{ path('publeash_publication_addchapter', {publicationId: publication.id}) }}"
+                                   class="btn btn-success" style="margin-left: 10px">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                </a>
+                            {% endif %}
+                        </span>
+                    </h3>
+                </div>
+                <ul class="media-list">
+                {% for review in publication.reviews %}
+                        <li class="media panel panel-default review">
+                            <div class="media-left media-top">
+                                <a href="#">
+                                    <img class="media-object" src="{{ gravatar(review.author.email, 64, 'g') }}" alt="{{ review.author.username }}">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">{{ review.author.username }}{{ layout.stars(review.rank) }} <small>{{ review.getDateCreate }}</small></h4>
+                                <p>{{ review.text }}</p>
+                            </div>
+                                {% set subreviews = review.reviews %}
+                                {% if subreviews is not empty %}
+                                    <ul class="media-list">
+                                    {% for subreview in subreviews %}
+                                        <li class="media panel panel-default review">
+                                            <div class="media-left media-top">
+                                                <a href="#">
+                                                    <img class="media-object" src="{{ gravatar(subreview.author.email, 64, 'g') }}" alt="{{ subreview.author.username }}">
+                                                </a>
+                                            </div>
+                                            <div class="media-body">
+                                                <h4 class="media-heading">{{ subreview.author.username }} <small>{{ review.getDateCreate }}</small></h4>
+                                                <p>{{ subreview.text }}</p>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                    </ul>
+                                {% endif %}
+                        </li>
+                {% endfor %}
+                </ul>
             {% endif %}
         </div>
     </div>

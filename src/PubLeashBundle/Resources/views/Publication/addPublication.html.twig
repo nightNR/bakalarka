@@ -10,6 +10,17 @@
             <input type="submit" id="_submit" name="_submit" value="{{ 'publication.add'|trans }}"
                    class="btn btn-primary btn-block"/>
         </div>
-        {{ form_end(form) }}
+        {{ form_end(form, { "render_rest": false}) }}
     </div>
+    <script type="text/javascript">
+        $('#publication_authors').selectize({
+            create: false,
+            plugins: ['remove_button'],
+            sortField: {
+                field: 'text',
+                direction: 'asc'
+            },
+            dropdownParent: 'body'
+        });
+    </script>
 {% endblock %}
