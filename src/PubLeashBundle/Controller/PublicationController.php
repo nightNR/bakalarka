@@ -158,7 +158,9 @@ class PublicationController extends Controller
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
+            $em->persist($publication);
             $em->flush();
+
             return $this->redirectToRoute('publeash_publication_showpublication', ['publicationId' => $publicationId, 'name' => $publication->getPrettyUrlTitle()]);
         }
         return [

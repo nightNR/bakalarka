@@ -118,7 +118,7 @@ class Publication
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection<User>
      */
     public function getAuthors()
     {
