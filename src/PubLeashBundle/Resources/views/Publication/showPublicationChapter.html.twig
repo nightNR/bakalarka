@@ -2,6 +2,29 @@
 {% extends '@PubLeash/layout.html.twig' %}
 {% import '@PubLeash/layout.html.twig' as layout %}
 
+{% block side_nav %}
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+        <ul class="nav sidebar-nav">
+            {#<li>#}
+            {#<a href="#"><i class="glyphicon glyphicon-home"></i> </a>#}
+            {#</li>#}
+            {% if publication_service.allowedEdit(chapter.publication) %}
+            <li data-toggle="tooltip" data-placement="right" title="Edit publication">
+                <a href="{{ path('publeash_publication_editchapter', {chapterId: chapter.id}) }}">
+                    <i class="glyphicon glyphicon-edit"></i>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    <script type="application/javascript">
+        $(document).ready(function () {
+            $('#wrapper').css('padding-left', '55px');
+            $('#sidebar-wrapper').css('width', '55px');
+        });
+    </script>
+{% endblock %}
+
 {% block body %}
     <div class="row publication-show">
         <div class="container-fluid">
@@ -12,12 +35,6 @@
             {% else %}
                 <div class="page-header">
                     <h1>{{ chapter.title }}
-                        {% if publication_service.allowedEdit(chapter.publication) %}
-                            <a href="{{ path('publeash_publication_editchapter', {chapterId: chapter.id}) }}"
-                               class="btn btn-success" style="margin-left: 10px">
-                                <i class="glyphicon glyphicon-edit"></i>
-                            </a>
-                        {% endif %}
                         {{ layout.stars(chapter.rank) }}
                     </h1>
 
