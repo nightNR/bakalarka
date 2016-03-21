@@ -2,6 +2,28 @@
 {% extends '@PubLeash/layout.html.twig' %}
 {% import '@PubLeash/layout.html.twig' as layout %}
 
+{% block side_nav %}
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+        <ul class="nav sidebar-nav">
+            {#<li>#}
+            {#<a href="#"><i class="glyphicon glyphicon-home"></i> </a>#}
+            {#</li>#}
+                <li data-toggle="tooltip" data-placement="right" title="Add publication">
+                    <a href="{{ path('publeash_publication_addpublication') }}">
+                        <i class="glyphicon glyphicon-plus"></i>
+                    </a>
+                </li>
+        </ul>
+    </nav>
+    <script type="application/javascript">
+        $(document).ready(function () {
+            $('#wrapper').css('padding-left', '55px');
+            $('#sidebar-wrapper').css('width', '55px');
+        });
+    </script>
+{% endblock %}
+
+
 {% block body %}
     <script type="text/javascript">
         $(function () {
@@ -67,7 +89,7 @@
                             </p>
                             <div class="author">
                                 {{ 'publication.author'|trans }}:
-                                {% for author in publication.authors %}
+                                {% for author in publication.authors(true) %}
                                     {{ author.username }} {{ (loop.last == false) ? ',' : '' }}
                                 {% endfor %}
                             </div>

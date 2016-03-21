@@ -49,12 +49,6 @@ class Publication
         $repository = $this->em->getRepository(\PubLeashBundle\Entity\Publication::class);
         $queryBuilder = $repository->createQueryBuilder('p')->orderBy('p.dateCreate', 'DESC');
         $queryBuilder->where('p.dateDelete is null');
-        if($user = $this->getUser()) {
-            $queryBuilder->andWhere('p.isPublished = true OR :author MEMBER OF p.authors');
-            $queryBuilder->setParameter('author', $user);
-        } else {
-            $queryBuilder->andWhere('p.isPublished = true');
-        }
         return $this->paginate($queryBuilder, $page, $limit);
     }
 

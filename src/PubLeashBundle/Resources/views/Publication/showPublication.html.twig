@@ -10,7 +10,7 @@
     <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
         <ul class="nav sidebar-nav">
             {#<li>#}
-                {#<a href="#"><i class="glyphicon glyphicon-home"></i> </a>#}
+            {#<a href="#"><i class="glyphicon glyphicon-home"></i> </a>#}
             {#</li>#}
             {% if publication_service.allowedEdit(publication) %}
                 <li data-toggle="tooltip" data-placement="right" title="Edit publication">
@@ -20,9 +20,17 @@
                 </li>
             {% endif %}
             {% if publication_service.allowedEdit(publication) %}
-                <li data-toggle="tooltip" data-placement="right" title="Add publication">
+                <li data-toggle="tooltip" data-placement="right" title="Add chapter">
                     <a href="{{ path('publeash_publication_addchapter', {publicationId: publication.id}) }}">
                         <i class="glyphicon glyphicon-plus"></i>
+                    </a>
+                </li>
+            {% endif %}
+            {% if publication_service.allowedDelete(publication) %}
+                <li data-toggle="tooltip" data-placement="right" title="Delete chapter">
+                    <a role="button" data-toggle="modal"
+                            data-target="#confirmDeleteModal" data-id="{{ publication.id }}"
+                            data-title="{{ publication.title }}"><i class="glyphicon glyphicon-remove"></i>
                     </a>
                 </li>
             {% endif %}
@@ -37,6 +45,27 @@
 {% endblock %}
 
 {% block body %}
+    <script type="text/javascript">
+        $(function () {
+            $('#confirmDeleteModal').on('show.bs.modal', function (event) {
+                var baseUrl = "{{ path('publeash_publication_removepublication', {publicationId: '{publicationId}'}) }}";
+                var baseCaption = "{{ 'publication.confirm.delete.claim'|trans }}";
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var title = button.data('title');
+
+                var modal = $(this);
+
+                var modalUrl = modal.find('#confirm-delete');
+                var modalBody = modal.find('.modal-body');
+
+                modalBody.text(baseCaption.replace('{publicationTitle}', title));
+                modalUrl.attr('href', encodeURI(decodeURI(baseUrl).replace('{publicationId}', id)));
+                modalUrl.attr('href', encodeURI(decodeURI(modalUrl.attr('href')).replace('{publicationId}', id)));
+            })
+        });
+
+    </script>
     <!-- /#sidebar-wrapper -->
     <div class="row publication-show">
         <div class="container-fluid">
@@ -54,7 +83,7 @@
                 <div class="author row">
             <span class="text-left col-md-6">
             {{ 'publication.author'|trans }}:
-                {% for author in publication.authors %}
+                {% for author in publication.authors(true) %}
                     {{ author.username }} {{ (loop.last == false) ? ',' : '' }}
                 {% endfor %}
             </span>
@@ -75,23 +104,24 @@
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-body">
-                    {% set chapters = publication.chapters %}
-                    {% for chapter in chapters %}
-                        <div class="bs-callout bs-callout-info" onclick="location.href='{{ path('publeash_publication_showpublicationchapter', { "publicationId": publication.id, "chapterId": chapter.id }) }}'">
-                            <div class="page-header">
-                                <h3>{{ chapter.title }}
-                                    {{ layout.stars(chapter.rank) }}
-                            </div>
-                            <div class="row author">
+                        {% set chapters = publication.chapters %}
+                        {% for chapter in chapters %}
+                            <div class="bs-callout bs-callout-info"
+                                 onclick="location.href='{{ path('publeash_publication_showpublicationchapter', { "publicationId": publication.id, "chapterId": chapter.id }) }}'">
+                                <div class="page-header">
+                                    <h3>{{ chapter.title }}
+                                        {{ layout.stars(chapter.rank) }}
+                                </div>
+                                <div class="row author">
                                 <span class="text-right col-md-6 col-md-offset-6">
                                     {{ 'publication.date_create'|trans }}: {{ chapter.dateCreate }}
                                     {{ 'publication.date_update'|trans }}: {{ chapter.dateUpdate }}
                                 </span>
-                            </div>
+                                </div>
 
-                            {{ chapter.preview | raw }}
-                        </div>
-                    {% endfor %}
+                                {{ chapter.preview | raw }}
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="page-header">
@@ -99,6 +129,24 @@
                 </div>
                 {{ layout.reviews(publication.reviews) }}
             {% endif %}
+        </div>
+    </div>
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="confirmDeleteModal">{{ 'publication.confirm.delete.title'|trans }}</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'main.close'|trans }}</button>
+                    <a href="#" type="button" class="btn btn-danger" id="confirm-delete">{{ 'main.confirm'|trans }}</a>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -41,27 +41,27 @@ class PublicationType extends AbstractType
             ])
         ;
 
-
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event){
 
-            /** @var Publication $publication */
-            $publication = $event->getForm()->getData();
-            $eventAuthors = $event->getData()['authors'];
-            /** @var User $author */
-            foreach($publication->getAuthors() as $author){
-                if(!in_array($author->getId(), $eventAuthors)){
-                    $author->removePublication($publication);
-                }
-            }
+//            /** @var Publication $publication */
+//            $publication = $event->getForm()->getData();
+//            $eventAuthors = $event->getData()['authors'];
+//            /** @var User $author */
+//            foreach($publication->getAuthors() as $author){
+//                if(!in_array($author->getId(), $eventAuthors)){
+//                    $author->removePublication($publication);
+//                }
+//            }
         });
 
         $builder->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
-            /** @var Publication $publication */
-            $publication = $event->getData();
-            /** @var User $author */
-            foreach($publication->getAuthors() as $author){
-                $author->addPublication($publication);
-            }
+//            /** @var Publication $publication */
+//            $publication = $event->getData();
+//            /** @var User $author */
+//            foreach($publication->getAuthors() as $author){
+//                $author->addPublication($publication);
+//            }
+//            $publication->add
         });
     }
     

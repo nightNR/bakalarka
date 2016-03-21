@@ -68,16 +68,26 @@ class User extends FOSUser
     protected $language;
 
     /**
-     * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="PubLeashBundle\Entity\Publication", inversedBy="authors")
+     * @var ArrayCollection <PublicationXAuthor>
+     * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\PublicationXAuthor", mappedBy="user")
      */
-    protected $publications;
+    protected $userPublicationReference;
 
     /**
      * @var
      * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\Review", mappedBy="author")
      */
     protected $reviews;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->userPublicationReference = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
+        parent::__construct();
+    }
 
 
     /**
@@ -227,11 +237,18 @@ class User extends FOSUser
     /**
      * Get publications
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection <Publication>
      */
-    public function getPublications()
+    public function getPublications($validOnly = false)
     {
-        return $this->publications;
+        $ret = new ArrayCollection();
+        /** @var PublicationXAuthor $publicationReference */
+        foreach($this->userPublicationReference as $publicationReference) {
+            if(!$validOnly || $publicationReference->getIsValid()){
+                $ret[] = $publicationReference->getPublication();
+            }
+        }
+        return $ret;
     }
 
     /**
@@ -269,28 +286,36 @@ class User extends FOSUser
     }
 
     /**
-     * Add publication
+     * Add userPublicationReference
      *
-     * @param Publication $publication
+     * @param \PubLeashBundle\Entity\PublicationXAuthor $userPublicationReference
      *
      * @return User
      */
-    public function addPublication(Publication $publication)
+    public function addUserPublicationReference(\PubLeashBundle\Entity\PublicationXAuthor $userPublicationReference)
     {
-        if(!$this->publications->contains($publication)){
-            $this->publications[] = $publication;
-        }
+        $this->userPublicationReference[] = $userPublicationReference;
 
         return $this;
     }
 
     /**
-     * Remove publication
+     * Remove userPublicationReference
      *
-     * @param Publication $publication
+     * @param \PubLeashBundle\Entity\PublicationXAuthor $userPublicationReference
      */
-    public function removePublication(Publication $publication)
+    public function removeUserPublicationReference(\PubLeashBundle\Entity\PublicationXAuthor $userPublicationReference)
     {
-        $this->publications->removeElement($publication);
+        $this->userPublicationReference->removeElement($userPublicationReference);
+    }
+
+    /**
+     * Get userPublicationReference
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUserPublicationReference()
+    {
+        return $this->userPublicationReference;
     }
 }
