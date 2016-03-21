@@ -53,10 +53,10 @@ class Publication
     protected $language;
 
     /**
-     * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="PubLeashBundle\Entity\User", mappedBy="publications")
+     * @var
+     * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\PublicationXAuthor", mappedBy="publication", cascade={"persist","remove"}, orphanRemoval=true)
      */
-    protected $authors;
+    protected $userPublicationReference;
 
     /**
      * @var
@@ -118,11 +118,19 @@ class Publication
     }
 
     /**
-     * @return ArrayCollection<User>
+     * @param bool $validOnly
+     * @return ArrayCollection <User>
      */
-    public function getAuthors()
+    public function getAuthors($validOnly = false)
     {
-        return $this->authors;
+        $ret = new ArrayCollection();
+        /** @var PublicationXAuthor $publicationReference */
+        foreach($this->userPublicationReference as $publicationReference) {
+            if(!$validOnly || $publicationReference->getIsValid()){
+                $ret[] = $publicationReference->getUser();
+            }
+        }
+        return $ret;
     }
 
 
@@ -296,31 +304,6 @@ class Publication
     }
 
     /**
-     * Add author
-     *
-     * @param User $author
-     *
-     * @return Publication
-     */
-    public function addAuthor(User $author)
-    {
-        $author->addPublication($this);
-        $this->authors[] = $author;
-
-        return $this;
-    }
-
-    /**
-     * Remove author
-     *
-     * @param User $author
-     */
-    public function removeAuthor(User $author)
-    {
-        $this->authors->removeElement($author);
-    }
-
-    /**
      * Add chapter
      *
      * @param Chapter $chapter
@@ -373,9 +356,64 @@ class Publication
      */
     public function __construct()
     {
-        $this->authors = new ArrayCollection();
+        $this->userPublicationReference = new ArrayCollection();
         $this->chapters = new ArrayCollection();
         $this->reviews = new ArrayCollection();
     }
 
+
+    /**
+     * Add userPublicationReference
+     *
+     * @param \PubLeashBundle\Entity\PublicationXAuthor $userPublicationReference
+     *
+     * @return Publication
+     */
+    public function addUserPublicationReference(\PubLeashBundle\Entity\PublicationXAuthor $userPublicationReference)
+    {
+        $this->userPublicationReference[] = $userPublicationReference;
+
+        return $this;
+    }
+
+    /**
+     * Remove userPublicationReference
+     *
+     * @param \PubLeashBundle\Entity\PublicationXAuthor $userPublicationReference
+     */
+    public function removeUserPublicationReference(\PubLeashBundle\Entity\PublicationXAuthor $userPublicationReference)
+    {
+        $this->userPublicationReference->removeElement($userPublicationReference);
+    }
+
+    /**
+     * Get userPublicationReference
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUserPublicationReference()
+    {
+        return $this->userPublicationReference;
+    }
+
+    public function removeAuthor(User $author) {
+        /** @var PublicationXAuthor $userReference */
+        foreach($this->userPublicationReference as $userReference) {
+            if($userReference->getUser() == $author) {
+                $this->userPublicationReference->removeElement($userReference);
+            }
+        }
+        return $this;
+    }
+
+    public function addAuthor(User $author) {
+        /** @var PublicationXAuthor $userReference */
+        foreach($this->userPublicationReference as $userReference) {
+            if($userReference->getUser() == $author) {
+                return $this;
+            }
+        }
+        $this->userPublicationReference[] = new PublicationXAuthor($author, $this);
+        return $this;
+    }
 }

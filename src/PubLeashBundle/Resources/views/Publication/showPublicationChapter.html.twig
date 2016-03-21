@@ -9,7 +9,7 @@
             {#<a href="#"><i class="glyphicon glyphicon-home"></i> </a>#}
             {#</li>#}
             {% if publication_service.allowedEdit(chapter.publication) %}
-            <li data-toggle="tooltip" data-placement="right" title="Edit publication">
+            <li data-toggle="tooltip" data-placement="right" title="Edit chapter">
                 <a href="{{ path('publeash_publication_editchapter', {chapterId: chapter.id}) }}">
                     <i class="glyphicon glyphicon-edit"></i>
                 </a>

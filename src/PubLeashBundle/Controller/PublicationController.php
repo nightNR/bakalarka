@@ -10,6 +10,7 @@ namespace PubLeashBundle\Controller;
 
 
 use PubLeashBundle\Entity;
+use PubLeashBundle\Entity\Publication;
 use PubLeashBundle\Entity\User;
 use PubLeashBundle\Form\ChapterType;
 use PubLeashBundle\Form\PublicationType;
@@ -161,7 +162,7 @@ class PublicationController extends Controller
             $em->persist($publication);
             $em->flush();
 
-            return $this->redirectToRoute('publeash_publication_showpublication', ['publicationId' => $publicationId, 'name' => $publication->getPrettyUrlTitle()]);
+//            return $this->redirectToRoute('publeash_publication_showpublication', ['publicationId' => $publicationId, 'name' => $publication->getPrettyUrlTitle()]);
         }
         return [
             'form' => $form->createView(),
@@ -253,6 +254,14 @@ class PublicationController extends Controller
             'form' => $form->createView(),
             'chapter_id' => $chapterId,
         ];
+    }
+
+    public function addAuthor(User $author, Publication $publication) {
+
+    }
+
+    public function removeAuthor(User $author, Publication $publication) {
+
     }
 
 }

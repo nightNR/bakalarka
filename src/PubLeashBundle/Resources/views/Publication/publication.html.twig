@@ -8,7 +8,7 @@
             {#<li>#}
             {#<a href="#"><i class="glyphicon glyphicon-home"></i> </a>#}
             {#</li>#}
-                <li data-toggle="tooltip" data-placement="right" title="Edit publication">
+                <li data-toggle="tooltip" data-placement="right" title="Add publication">
                     <a href="{{ path('publeash_publication_addpublication') }}">
                         <i class="glyphicon glyphicon-plus"></i>
                     </a>
@@ -89,7 +89,7 @@
                             </p>
                             <div class="author">
                                 {{ 'publication.author'|trans }}:
-                                {% for author in publication.authors %}
+                                {% for author in publication.authors(true) %}
                                     {{ author.username }} {{ (loop.last == false) ? ',' : '' }}
                                 {% endfor %}
                             </div>
