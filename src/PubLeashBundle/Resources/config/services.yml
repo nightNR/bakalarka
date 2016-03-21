@@ -22,3 +22,6 @@ services:
   author:
     class: PubLeashBundle\Service\Author
     autowire: true
+
+  notification:
+    class: PubLeashBundle\Service\Notification

@@ -15,6 +15,7 @@ trans:
   edit: 'Edit Publication'
   read:
     publication: 'Read Publication'
+  notifications: 'Notifications'
 
 publication:
   title: 'Title'
@@ -39,3 +40,6 @@ publication:
 main:
   close: 'Close'
   confirm: 'Confirm'
+
+notification:
+  authorship: 'Pending authorship requests'

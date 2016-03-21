@@ -252,6 +252,20 @@ class User extends FOSUser
     }
 
     /**
+     * @return ArrayCollection
+     */
+    public function getPendingAuthorshipRequests() {
+        $tmp = new ArrayCollection();
+        /** @var PublicationXAuthor $userReference */
+        foreach($this->userPublicationReference as $userReference) {
+            if(!$userReference->getIsValid()){
+                $tmp[] = $userReference;
+            }
+        }
+        return $tmp;
+    }
+
+    /**
      * Add review
      *
      * @param \PubLeashBundle\Entity\Review $review

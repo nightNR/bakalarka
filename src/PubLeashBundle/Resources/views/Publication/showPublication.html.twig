@@ -19,18 +19,18 @@
                     </a>
                 </li>
             {% endif %}
-            {% if publication_service.allowedEdit(publication) %}
-                <li data-toggle="tooltip" data-placement="right" title="Add chapter">
-                    <a href="{{ path('publeash_publication_addchapter', {publicationId: publication.id}) }}">
-                        <i class="glyphicon glyphicon-plus"></i>
-                    </a>
-                </li>
-            {% endif %}
             {% if publication_service.allowedDelete(publication) %}
                 <li data-toggle="tooltip" data-placement="right" title="Delete chapter">
                     <a role="button" data-toggle="modal"
                             data-target="#confirmDeleteModal" data-id="{{ publication.id }}"
                             data-title="{{ publication.title }}"><i class="glyphicon glyphicon-remove"></i>
+                    </a>
+                </li>
+            {% endif %}
+            {% if publication_service.allowedEdit(publication) %}
+                <li data-toggle="tooltip" data-placement="right" title="Add chapter">
+                    <a href="{{ path('publeash_publication_addchapter', {publicationId: publication.id}) }}">
+                        <i class="glyphicon glyphicon-plus"></i>
                     </a>
                 </li>
             {% endif %}

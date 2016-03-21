@@ -1,0 +1,59 @@
+{% trans_default_domain 'PubLeashBundle' %}
+{% extends '@PubLeash/layout.html.twig' %}
+{% import '@PubLeash/layout.html.twig' as layout %}
+
+{% block body %}
+    <div class="page-header">
+        <h1>{{ 'notification.authorship'|trans }}</h1>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <th>#</th><th>Name</th><th>Authors</th><th>Date created</th><th>Last update</th><th></th>
+        </thead>
+        <tbody>
+            {% for request in pending_requests %}
+                <tr id="publication-id-{{ request.publication.id }}">
+                    <td>{{ request.publication.id }}</td>
+                    <td>{{ request.publication.title }}</td>
+                    <td>
+                        {% for author in request.publication.authors %}
+                            {{ author.username }}
+
+                            {{ (loop.last == false) ? ',' : '' }}
+                        {% endfor %}
+                    </td>
+                    <td>{{ request.publication.dateCreate }}</td>
+                    <td>{{ request.publication.dateUpdate }}</td>
+                    <td><button class="btn btn-success btn-confirm" data-loading-text="Loading..." data-id="{{ request.publication.id }}">{{ 'main.confirm' | trans }}</button></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script type="application/javascript">
+        $('.btn-confirm').on('click', function () {
+            var $btn = $(this).button('loading');
+            var confirmUrl = '{{ path('publeash_user_confirmauthorshiprequest') }}';
+            var publicationIdData = $(this).attr('data-id');
+            console.log(publicationIdData);
+            $.ajax({
+                url: confirmUrl,
+                method: 'POST',
+                data: {
+                    publicationId: publicationIdData
+                },
+                success: function(data){
+                    console.log('data');
+                    if(data.status == 'OK'){
+                        var row = $('#publication-id-' + publicationIdData);
+                        row.fadeOut('medium', function() {
+                            row.remove();
+                        });
+                        $btn.button('reset')
+                    }
+                }
+            });
+        })
+    </script>
+
+{% endblock %}

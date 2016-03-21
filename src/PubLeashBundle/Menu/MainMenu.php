@@ -103,26 +103,9 @@ class MainMenu implements ContainerAwareInterface
 
         $menu->addChild('trans.books',
             [
-                'uri' => '#',
-                'childrenAttributes' => [
-                    'class' => 'dropdown-menu'
-                ],
-                'linkAttributes' => [
-                    'data-toggle' => 'dropdown',
-                    'class' => 'dropdown-toggle',
-                    'role' => 'button',
-                    'aria-haspopup' => 'true',
-                    'aria-expanded' => 'false'
-                ],
-                'attributes' => [
-                    'class' => 'dropdown'
-                ]
+                'route' => 'publeash_publication_publication',
             ]
         );
-
-
-        $menu['trans.books']->addChild('trans.books_browse', array('route' => 'publeash_publication_publication'));
-        $menu['trans.books']->addChild('trans.books_add', array('route' => 'publeash_publication_addpublication'));
 
         $menu->addChild('trans.library', array('route' => 'publeash_library_library'));
 
