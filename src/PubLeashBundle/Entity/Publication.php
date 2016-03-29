@@ -81,6 +81,12 @@ class Publication
      * @ORM\Column(name="date_delete", type="datetime", nullable=true)
      */
     protected $dateDelete;
+
+    /**
+     * @var
+     * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\LibraryEntry", mappedBy="publication")
+     */
+    protected $ownedBy;
     
     /**
      * @return mixed
@@ -418,5 +424,48 @@ class Publication
         }
         $this->userPublicationReference[] = new PublicationXAuthor($author, $this);
         return $this;
+    }
+
+    /**
+     * Add ownedBy
+     *
+     * @param \PubLeashBundle\Entity\LibraryEntry $ownedBy
+     *
+     * @return Publication
+     */
+    public function addOwnedBy(\PubLeashBundle\Entity\LibraryEntry $ownedBy)
+    {
+        $this->ownedBy[] = $ownedBy;
+
+        return $this;
+    }
+
+    /**
+     * Remove ownedBy
+     *
+     * @param \PubLeashBundle\Entity\LibraryEntry $ownedBy
+     */
+    public function removeOwnedBy(\PubLeashBundle\Entity\LibraryEntry $ownedBy)
+    {
+        $this->ownedBy->removeElement($ownedBy);
+    }
+
+    /**
+     * Get ownedBy
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOwnedBy()
+    {
+        return $this->ownedBy;
+    }
+
+    public function getOwners() {
+        $ret = new ArrayCollection();
+        /** @var LibraryEntry $ownerLibraryEntry */
+        foreach($this->getOwnedBy() as $ownerLibraryEntry) {
+            $ret->add($ownerLibraryEntry->getUser());
+        }
+        return $ret;
     }
 }

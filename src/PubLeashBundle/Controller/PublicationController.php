@@ -162,7 +162,7 @@ class PublicationController extends Controller
             $em->persist($publication);
             $em->flush();
 
-//            return $this->redirectToRoute('publeash_publication_showpublication', ['publicationId' => $publicationId, 'name' => $publication->getPrettyUrlTitle()]);
+            return $this->redirectToRoute('publeash_publication_showpublication', ['publicationId' => $publicationId, 'name' => $publication->getPrettyUrlTitle()]);
         }
         return [
             'form' => $form->createView(),

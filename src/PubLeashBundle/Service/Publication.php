@@ -61,13 +61,20 @@ class Publication
 
     public function isAllowedEdit(\PubLeashBundle\Entity\Publication $publication) {
         if($user = $this->getUser()){
-            return $publication->getAuthors()->contains($user)/* || $user->hasRole('ROLE_ADMIN')*/;
+            return $publication->getAuthors()->contains($user);
         }
         return false;
     }
 
     public function isAllowedShow(\PubLeashBundle\Entity\Publication $publication) {
         return true;
+    }
+
+    public function userIsOwner(\PubLeashBundle\Entity\Publication $publication) {
+        if($user = $this->getUser()){
+            return $publication->getOwners()->contains($user) || $publication->getAuthors()->contains($user);
+        }
+        return false;
     }
 
     /**

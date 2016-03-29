@@ -34,6 +34,12 @@
                     </a>
                 </li>
             {% endif %}
+            {% if not publication_service.userIsOwner(publication) %}
+                <li data-toggle="tooltip" data-placement="right" title="Add to library">
+                    <a role="button" id="add-to-library-action" data-publication-id="{{ publication.id }}"><i class="glyphicon glyphicon-download-alt"></i>
+                    </a>
+                </li>
+            {% endif %}
         </ul>
     </nav>
     <script type="application/javascript">
@@ -62,6 +68,19 @@
                 modalBody.text(baseCaption.replace('{publicationTitle}', title));
                 modalUrl.attr('href', encodeURI(decodeURI(baseUrl).replace('{publicationId}', id)));
                 modalUrl.attr('href', encodeURI(decodeURI(modalUrl.attr('href')).replace('{publicationId}', id)));
+            })
+
+            $('#add-to-library-action').on('click', function() {
+                var publicationId = $('#add-to-library-action').attr('data-publication-id');
+                PubLeash.makeApiCall('publication', 'add_to_library', [publicationId], function(data) {
+                    console.log(data);
+                    if(data.code == 200) {
+                        $('#add-to-library-action').parent().remove();
+                        PubLeash.addFlashMessage('alert-success', data.message);
+                    } else {
+                        PubLeash.addFlashMessage('alert-danger', data.message);
+                    }
+                });
             })
         });
 
@@ -106,6 +125,7 @@
                     <div class="panel-body">
                         {% set chapters = publication.chapters %}
                         {% for chapter in chapters %}
+                            {% if chapter.isPublished or publication_service.allowedEdit(publication) or publication_service.allowedDelete(publication) %}
                             <div class="bs-callout bs-callout-info"
                                  onclick="location.href='{{ path('publeash_publication_showpublicationchapter', { "publicationId": publication.id, "chapterId": chapter.id }) }}'">
                                 <div class="page-header">
@@ -121,6 +141,7 @@
 
                                 {{ chapter.preview | raw }}
                             </div>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>

@@ -58,7 +58,7 @@ class Chapter
      * @var
      * @ORM\Column(name="is_published", type="boolean", options={"default": false})
      */
-    protected $isPublished;
+    protected $isPublished = false;
 
     /**
      * @return int

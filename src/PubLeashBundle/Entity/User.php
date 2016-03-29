@@ -80,6 +80,12 @@ class User extends FOSUser
     protected $reviews;
 
     /**
+     * @var
+     * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\LibraryEntry", mappedBy="user")
+     */
+    protected $ownedPublications;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -331,5 +337,51 @@ class User extends FOSUser
     public function getUserPublicationReference()
     {
         return $this->userPublicationReference;
+    }
+
+    /**
+     * Add ownedPublication
+     *
+     * @param \PubLeashBundle\Entity\LibraryEntry $ownedPublication
+     *
+     * @return User
+     */
+    public function addOwnedPublication(\PubLeashBundle\Entity\LibraryEntry $ownedPublication)
+    {
+        $this->ownedPublications[] = $ownedPublication;
+
+        return $this;
+    }
+
+    /**
+     * Remove ownedPublication
+     *
+     * @param \PubLeashBundle\Entity\LibraryEntry $ownedPublication
+     */
+    public function removeOwnedPublication(\PubLeashBundle\Entity\LibraryEntry $ownedPublication)
+    {
+        $this->ownedPublications->removeElement($ownedPublication);
+    }
+
+    /**
+     * Get ownedPublications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOwnedPublications()
+    {
+        return $this->ownedPublications;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getOwnedPublicationEntities() {
+        $ret = new ArrayCollection();
+        /** @var LibraryEntry $libraryEntry */
+        foreach($this->getOwnedPublications() as $libraryEntry) {
+            $ret->add($libraryEntry->getPublication());
+        }
+        return $ret;
     }
 }
