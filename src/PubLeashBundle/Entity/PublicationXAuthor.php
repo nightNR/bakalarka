@@ -8,6 +8,7 @@
 
 namespace PubLeashBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use PubLeashBundle\Entity\Traits\DateUpdateTrait;
 use Symfony\Component\Config\Definition\BooleanNode;
 
 /**
@@ -16,9 +17,11 @@ use Symfony\Component\Config\Definition\BooleanNode;
  *
  * @ORM\Table(name="user_publication")
  * @ORM\Entity()
+ * @ORM\HasLifecycleCallbacks()
  */
 class PublicationXAuthor
 {
+    use DateUpdateTrait;
 
     /**
      * @var User

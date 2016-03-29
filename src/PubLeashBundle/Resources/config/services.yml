@@ -25,3 +25,13 @@ services:
 
   notification:
     class: PubLeashBundle\Service\Notification
+
+  api:
+    class: PubLeashBundle\Service\Api
+    autowire: true
+
+  api_chapter:
+    class: PubLeashBundle\Service\ApiChapter
+    arguments: ['@doctrine.orm.default_entity_manager']
+    tags:
+      - { name: api.service }

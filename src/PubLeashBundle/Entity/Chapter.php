@@ -154,6 +154,7 @@ class Chapter
     public function setIsPublished($isPublished)
     {
         $this->isPublished = $isPublished;
+        $this->getPublication()->computeIsPublished();
     }
 
     public function getPreview() {

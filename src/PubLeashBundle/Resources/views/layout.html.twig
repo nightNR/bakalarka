@@ -23,6 +23,10 @@
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+
+    <script type="application/javascript">
+        var apiUrl = '{{ path('publeash_api_request') }}';
+    </script>
 </head>
 
 <body>
@@ -38,6 +42,7 @@
                 {% block breadcrumbs %}
                     {{ include("PubLeashBundle:breadbrumbs.html.twig") }}
                 {% endblock %}
+                <div class="container-fluid" id="flash-messages"></div>
                 <div class="container-fluid">
                     {% block body %}
                     {% endblock %}

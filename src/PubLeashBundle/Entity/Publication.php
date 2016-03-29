@@ -240,7 +240,10 @@ class Publication
          * @var Chapter $chapter
          */
         foreach ($chapters as $chapter) {
-            if ($chapter->getIsPublished()) return true;
+            if ($chapter->getIsPublished()) {
+                $this->setIsPublished(true);
+                return true;
+            }
         }
         return false;
     }

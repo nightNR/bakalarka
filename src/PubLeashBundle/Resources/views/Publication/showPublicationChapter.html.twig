@@ -15,12 +15,55 @@
                 </a>
             </li>
             {% endif %}
+
+            {% if publication_service.allowedEdit(chapter.publication) %}
+                    <li data-toggle="tooltip" data-placement="right" title="Publish" class="{%  if chapter.isPublished %} hidden {% endif %}">
+                        <a role="button" id="publish-action" data-publication-id="{{ chapter.publication.id }}"
+                           data-chapter-id="{{ chapter.id }}"><i class="glyphicon glyphicon-ok"></i>
+                        </a>
+                    </li>
+                    <li data-toggle="tooltip" data-placement="right" title="Unpublish" class="{%  if not chapter.isPublished %} hidden {% endif %}">
+                        <a role="button" id="unpublish-action" data-publication-id="{{ chapter.publication.id }}"
+                           data-chapter-id="{{ chapter.id }}"><i class="glyphicon glyphicon-remove"></i>
+                        </a>
+                    </li>
+            {% endif %}
         </ul>
     </nav>
     <script type="application/javascript">
         $(document).ready(function () {
             $('#wrapper').css('padding-left', '55px');
             $('#sidebar-wrapper').css('width', '55px');
+
+            $('#publish-action').on('click', function() {
+                var publicationId = $('#unpublish-action').attr('data-publication-id');
+                var chapterId = $('#unpublish-action').attr('data-chapter-id');
+                PubLeash.makeApiCall('chapter', 'publish', [publicationId, chapterId], function(data) {
+                    console.log(data);
+                    if(data.code == 200) {
+                        $('#publish-action').parent().addClass('hidden');
+                        $('#unpublish-action').parent().removeClass('hidden');
+                        PubLeash.addFlashMessage('alert-success', data.message);
+                    } else {
+                        PubLeash.addFlashMessage('alert-danger', data.message);
+                    }
+                });
+
+            });
+            $('#unpublish-action').on('click', function() {
+                var publicationId = $('#unpublish-action').attr('data-publication-id');
+                var chapterId = $('#unpublish-action').attr('data-chapter-id');
+                PubLeash.makeApiCall('chapter', 'unpublish', [publicationId, chapterId], function(data) {
+                    console.log(data);
+                    if(data.code == 200) {
+                        $('#unpublish-action').parent().addClass('hidden');
+                        $('#publish-action').parent().removeClass('hidden');
+                        PubLeash.addFlashMessage('alert-success', data.message);
+                    } else {
+                        PubLeash.addFlashMessage('alert-danger', data.message);
+                    }
+                });
+            })
         });
     </script>
 {% endblock %}
