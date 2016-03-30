@@ -14,23 +14,8 @@ use PubLeashBundle\Entity;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ApiChapter implements ApiServiceInterface
+class ApiChapter extends AbstractApiService
 {
-    use ContainerAwareTrait;
-    /**
-     * @var EntityManager
-     */
-    protected $em;
-
-    /**
-     * ApiChapter constructor.
-     * @param $em
-     */
-    public function __construct($em)
-    {
-        $this->em = $em;
-    }
-
 
     public function getName()
     {
@@ -68,32 +53,5 @@ class ApiChapter implements ApiServiceInterface
         $user = $this->getUser();
 
         return $chapter->getPublication()->getAuthors()->contains($user);
-    }
-
-    /**
-     * Get a user from the Security Token Storage.
-     *
-     * @return mixed
-     *
-     * @throws \LogicException If SecurityBundle is not available
-     *
-     * @see TokenInterface::getUser()
-     */
-    protected function getUser()
-    {
-        if (!$this->container->has('security.token_storage')) {
-            throw new \LogicException('The SecurityBundle is not registered in your application.');
-        }
-
-        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
-            return;
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            // e.g. anonymous authentication
-            return;
-        }
-
-        return $user;
     }
 }

@@ -384,4 +384,14 @@ class User extends FOSUser
         }
         return $ret;
     }
+
+    public function addPublicationToLibrary(Publication $publication) {
+        if(!$this->getOwnedPublicationEntities()->contains($publication)) {
+            $this->addOwnedPublication(
+                (new LibraryEntry())
+                    ->setUser($this)
+                    ->setPublication($publication)
+            );
+        }
+    }
 }

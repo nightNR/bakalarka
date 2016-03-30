@@ -35,3 +35,9 @@ services:
     arguments: ['@doctrine.orm.default_entity_manager']
     tags:
       - { name: api.service }
+
+  api_publication:
+      class: PubLeashBundle\Service\ApiPublication
+      arguments: ['@doctrine.orm.default_entity_manager']
+      tags:
+        - { name: api.service }
