@@ -8,10 +8,8 @@ user:
 
 trans:
   home: 'Home'
-  books: 'Books'
-  books_browse: 'Browse Books'
-  books_add: 'Publish new book'
-  library: 'Library'
+  books: 'Browse Books'
+  library: 'My Books'
   edit: 'Edit Publication'
   read:
     publication: 'Read Publication'
@@ -43,3 +41,4 @@ main:
 
 notification:
   authorship: 'Pending authorship requests'
+  authorization: 'Pending authorization requests'

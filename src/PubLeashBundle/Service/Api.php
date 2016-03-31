@@ -72,7 +72,8 @@ class Api
      * @param array $data
      * @return array
      */
-    public function handleRequest($serviceName, $command, array $data) {
+    public function handleRequest($serviceName, $command, $data) {
+        $data = $data?:[];
         $service = $this->getService($serviceName);
         $service->setContainer($this->container);
         $return = call_user_func_array([ $service, $command ], $data);

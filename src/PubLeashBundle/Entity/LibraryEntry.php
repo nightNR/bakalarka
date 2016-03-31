@@ -107,4 +107,28 @@ class LibraryEntry
     {
         return $this->publication;
     }
+
+    /**
+     * Set isAuthorized
+     *
+     * @param boolean $isAuthorized
+     *
+     * @return LibraryEntry
+     */
+    public function setIsAuthorized($isAuthorized)
+    {
+        $this->isAuthorized = $isAuthorized;
+
+        return $this;
+    }
+
+    /**
+     * Get isAuthorized
+     *
+     * @return boolean
+     */
+    public function getIsAuthorized()
+    {
+        return $this->isAuthorized;
+    }
 }

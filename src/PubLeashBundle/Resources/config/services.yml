@@ -41,3 +41,19 @@ services:
       arguments: ['@doctrine.orm.default_entity_manager']
       tags:
         - { name: api.service }
+
+  api_notification:
+        class: PubLeashBundle\Service\ApiNotification
+        arguments: ['@doctrine.orm.default_entity_manager']
+        tags:
+          - { name: api.service }
+
+  api_library:
+          class: PubLeashBundle\Service\ApiLibrary
+          arguments: ['@doctrine.orm.default_entity_manager']
+          tags:
+            - { name: api.service }
+
+  library:
+    class: PubLeashBundle\Service\Library
+    autowire: true

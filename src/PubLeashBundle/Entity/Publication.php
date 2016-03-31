@@ -87,6 +87,12 @@ class Publication
      * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\LibraryEntry", mappedBy="publication")
      */
     protected $ownedBy;
+
+    /**
+     * @var Rank[]
+     * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\Rank", mappedBy="publication")
+     */
+    protected $ranks;
     
     /**
      * @return mixed
@@ -272,17 +278,16 @@ class Publication
 
     public function getRank()
     {
-        $reviews = $this->getReviews();
+        $ranks = $this->getRanks();
         /**
          * @var Review $review
          */
         $sum = 0;
         $count = 0;
-        foreach ($reviews as $review) {
-            if (empty($review->getReview())) {
-                $sum += 2 * $review->getRank();
+        /** @var Rank $rank */
+        foreach ($ranks as $rank) {
+                $sum += 2 * $rank->getRank();
                 $count++;
-            }
         }
         return $count ? ((ceil($sum / $count)) / 2) : 0;
     }
@@ -467,5 +472,39 @@ class Publication
             $ret->add($ownerLibraryEntry->getUser());
         }
         return $ret;
+    }
+
+    /**
+     * Add rank
+     *
+     * @param \PubLeashBundle\Entity\Rank $rank
+     *
+     * @return Publication
+     */
+    public function addRank(\PubLeashBundle\Entity\Rank $rank)
+    {
+        $this->ranks[] = $rank;
+
+        return $this;
+    }
+
+    /**
+     * Remove rank
+     *
+     * @param \PubLeashBundle\Entity\Rank $rank
+     */
+    public function removeRank(\PubLeashBundle\Entity\Rank $rank)
+    {
+        $this->ranks->removeElement($rank);
+    }
+
+    /**
+     * Get ranks
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRanks()
+    {
+        return $this->ranks;
     }
 }

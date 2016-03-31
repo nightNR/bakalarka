@@ -1,0 +1,55 @@
+{% trans_default_domain 'PubLeashBundle' %}
+{% extends '@PubLeash/layout.html.twig' %}
+{% import '@PubLeash/layout.html.twig' as layout %}
+
+{% block body %}
+    <div class="page-header">
+        <h1>{{ 'notification.authorship'|trans }}</h1>
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <th>#</th><th>User Name</th><th>Publication name</th><th>Authors</th><th>Date created</th><th>Last update</th><th></th>
+        </thead>
+        <tbody>
+        {% for request in pending_requests %}
+            <tr id="publication-id-{{ request.id }}">
+                <td>{{ request.id }}</td>
+                <td>{{ request.user.username }}</td>
+                <td>{{ request.publication.title }}</td>
+                <td>
+                    {% for author in request.publication.authors %}
+                        {{ author.username }}
+
+                        {{ (loop.last == false) ? ',' : '' }}
+                    {% endfor %}
+                </td>
+                <td>{{ request.dateCreate }}</td>
+                <td>{{ request.dateUpdate }}</td>
+                <td><button class="btn btn-success btn-confirm" data-loading-text="Loading..." data-id="{{ request.id }}">{{ 'main.confirm' | trans }}</button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <script type="application/javascript">
+        $('.btn-confirm').on('click', function () {
+            var $btn = $(this).button('loading');
+            var requestIdData = $(this).attr('data-id');
+
+            PubLeash.makeApiCall('library', 'authorize', [requestIdData], function(data){
+//                    console.log('data');
+                if(data.code == 200){
+                    PubLeash.addFlashMessage('alert-success', data.message);
+                    var row = $('#publication-id-' + requestIdData);
+                    row.fadeOut('medium', function() {
+                        row.remove();
+                    });
+                    $btn.button('reset')
+                } else {
+                    PubLeash.addFlashMessage('alert-danger', data.message);
+                }
+            });
+        })
+    </script>
+
+{% endblock %}

@@ -25,7 +25,7 @@ class UserController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function pendingAuthorizationRequestsAction() {
+    public function pendingAuthorshipRequestsAction() {
         /** @var User $user */
         $user = $this->getUser();
         return [
@@ -34,33 +34,15 @@ class UserController extends Controller
     }
 
     /**
-     * @param $publicationId
-     * @return Response
-     * @Route("/user/authorship-request-confirm/", defaults={"_format": "json"}, requirements={"_format": "json|html"})
-     * @Method("POST")
+     * @Route("/user/authorisation-requests/{page}", defaults={"page": "1"}, requirements={"page": "\d+"})
+     * @Method("GET")
+     * @Template()
      */
-    public function confirmAuthorshipRequestAction(Request $request, $_format) {
-        $publicationId = $request->get('publicationId');
-        $serializer = $this->get('jms_serializer');
-        $em = $this->getDoctrine()->getManager();
+    public function pendingAuthorisationRequestsAction() {
         /** @var User $user */
         $user = $this->getUser();
-        $publication = $em->getRepository(Publication::class)->find($publicationId);
-        $relation = $em->getRepository(PublicationXAuthor::class)->find([
-            'user' => $user->getId(),
-            'publication' => $publication
-        ]);
-//        dump($relation);
-        $data = [];
-        if($relation != null) {
-            $relation->setIsValid(true);
-            $em->persist($relation);
-            $em->flush();
-            $data['status'] = 'OK';
-        } else {
-            $data['status'] = 'Error';
-        }
-
-        return new Response($serializer->serialize($data, $_format));
+        return [
+            'pending_requests' => $user->getPendingAuthorizationRequests()
+        ];
     }
 }

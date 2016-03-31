@@ -24,7 +24,8 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">{{ 'trans.notifications' | trans }} <span class="badge" id="pending-notification">0</span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ path('publeash_user_pendingauthorizationrequests') }}">{{ 'notification.authorship' | trans }} <span class="badge" id="pending-authorship">0</span></a></li>
+                            <li><a href="{{ path('publeash_user_pendingauthorshiprequests') }}">{{ 'notification.authorship' | trans }} <span class="badge" id="pending-authorship">0</span></a></li>
+                            <li><a href="{{ path('publeash_user_pendingauthorisationrequests') }}">{{ 'notification.authorization' | trans }} <span class="badge" id="pending-authorization">0</span></a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -64,7 +65,7 @@
 
 {% if app.user is not empty %}
 <script type="application/javascript">
-    var notificationUri = '{{ path('publeash_data_pendingrequestcount') }}.json';
+    {#var notificationUri = '{{ path('publeash_data_pendingrequestcount') }}.json';#}
     PubLeash.notifications();
 </script>
 {% endif %}

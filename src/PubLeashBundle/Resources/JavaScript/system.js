@@ -16,15 +16,12 @@ if(!window.PubLeash) {
         },
 
         notificationAjax: function() {
-            $.ajax({
-                url: notificationUri,
-                success: function(data) {
-                    for(var item in data) {
-                        //console.log(item);
-                        $('#'+ item).text(data[item]);
-                    }
+            PubLeash.makeApiCall('notifications', 'notifications', [], function(data) {
+                for(var item in data) {
+                    //console.log(item);
+                    $('#'+ item).text(data[item]);
                 }
-            });
+            })
         },
 
         addFlashMessage: function(type, message) {

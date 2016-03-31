@@ -33,24 +33,19 @@
     <script type="application/javascript">
         $('.btn-confirm').on('click', function () {
             var $btn = $(this).button('loading');
-            var confirmUrl = '{{ path('publeash_user_confirmauthorshiprequest') }}';
             var publicationIdData = $(this).attr('data-id');
-            console.log(publicationIdData);
-            $.ajax({
-                url: confirmUrl,
-                method: 'POST',
-                data: {
-                    publicationId: publicationIdData
-                },
-                success: function(data){
+
+            PubLeash.makeApiCall('publication', 'confirm_authorship', [publicationIdData], function(data){
 //                    console.log('data');
-                    if(data.status == 'OK'){
-                        var row = $('#publication-id-' + publicationIdData);
-                        row.fadeOut('medium', function() {
-                            row.remove();
-                        });
-                        $btn.button('reset')
-                    }
+                if(data.code == 200){
+                    PubLeash.addFlashMessage('alert-success', data.message);
+                    var row = $('#publication-id-' + publicationIdData);
+                    row.fadeOut('medium', function() {
+                        row.remove();
+                    });
+                    $btn.button('reset')
+                } else {
+                    PubLeash.addFlashMessage('alert-danger', data.message);
                 }
             });
         })

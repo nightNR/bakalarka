@@ -51,12 +51,6 @@ class Review
 
     /**
      * @var
-     * @ORM\Column(name="rank", type="decimal", precision=2, scale=1)
-     */
-    protected $rank;
-
-    /**
-     * @var
      * @ORM\ManyToOne(targetEntity="PubLeashBundle\Entity\Review", inversedBy="reviews")
      * @ORM\JoinColumn(nullable=true)
      */
@@ -142,22 +136,6 @@ class Review
     public function setText($text)
     {
         $this->text = $text;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRank()
-    {
-        return $this->rank;
-    }
-
-    /**
-     * @param mixed $rank
-     */
-    public function setRank($rank)
-    {
-        $this->rank = $rank;
     }
 
     /**

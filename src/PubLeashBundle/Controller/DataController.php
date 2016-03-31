@@ -29,24 +29,4 @@ class DataController extends Controller
         $serializedData = $serializer->serialize($authors, 'json');
         return new Response($serializedData);
     }
-
-    /**
-     * @Route("/data/pending-request-count.{_format}", defaults={"_format": "json"}, requirements={"_format": "json|html"})
-     * @Method("GET")
-     */
-    public function pendingRequestCount() {
-        $serializer = $this->get('jms_serializer');
-        $notificationService = $this->get('notification');
-        /** @var User $user */
-        $user = $this->getUser();
-
-
-        $data = [
-            'pending-authorship' => $notificationService->getUserPendingAuthorshipRequestCount($user),
-            'pending-notification' => $notificationService->getAllUserNotificationCount($user)
-        ];
-
-        $serializedData = $serializer->serialize($data, 'json');
-        return new Response($serializedData);
-    }
 }

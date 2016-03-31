@@ -81,9 +81,15 @@ class User extends FOSUser
 
     /**
      * @var
-     * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\LibraryEntry", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\LibraryEntry", mappedBy="user", cascade={"persist","remove"}, orphanRemoval=true)
      */
     protected $ownedPublications;
+
+    /**
+     * @var Rank[]
+     * @ORM\OneToMany(targetEntity="PubLeashBundle\Entity\Rank", mappedBy="user")
+     */
+    protected $ranks;
 
     /**
      * User constructor.
@@ -393,5 +399,20 @@ class User extends FOSUser
                     ->setPublication($publication)
             );
         }
+    }
+
+    public function getPendingAuthorizationRequests() {
+        $pendingRequests = new ArrayCollection();
+        /** @var Publication $publication */
+        foreach($this->getPublications() as $publication) {
+
+            /** @var LibraryEntry $libraryEntry */
+            foreach($publication->getOwnedBy() as $libraryEntry) {
+                if(!$libraryEntry->getIsAuthorized()) {
+                    $pendingRequests->add($libraryEntry);
+                }
+            }
+        }
+        return $pendingRequests;
     }
 }
