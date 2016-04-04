@@ -111,7 +111,7 @@ class Publication
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection|static
      */
     public function getReviews()
     {

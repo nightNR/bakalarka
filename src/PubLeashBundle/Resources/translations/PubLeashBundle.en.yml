@@ -14,6 +14,8 @@ trans:
   read:
     publication: 'Read Publication'
   notifications: 'Notifications'
+  send:
+    commentary: 'Send commentary'
 
 publication:
   title: 'Title'

@@ -77,6 +77,12 @@ class Publication
         return false;
     }
 
+    public function isAllowedToWriteReview(\PubLeashBundle\Entity\Publication $publication) {
+        $user = $this->getUser();
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('author', $user));
+        return $publication->getAuthors()->contains($user) || ( $publication->getOwners()->contains($user) && $publication->getReviews()->matching($criteria)->isEmpty());
+    }
+
     /**
      * @return null|User
      */

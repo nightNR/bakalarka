@@ -1,4 +1,4 @@
-{#{{ dump() }}#}
+{% trans_default_domain 'PubLeashBundle' %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -75,43 +75,85 @@
 {% endmacro %}
 
 {% macro reviews(data) %}
-    <ul class="media-list">
+    <ul class="media-list" id="reviews">
         {% for review in data %}
-            <li class="media panel panel-default review">
-                <div class="media-left media-top">
-                    <a href="#">
-                        <img class="media-object" src="{{ gravatar(review.author.email, 64, 'g') }}"
-                             alt="{{ review.author.username }}">
-                    </a>
-                </div>
-                <div class="media-body">
-                    <h4 class="media-heading">{{ review.author.username }}
-                        <small>{{ review.getDateCreate }}</small>
-                    </h4>
-                    <p>{{ review.text }}</p>
-                </div>
-                {% set subreviews = review.reviews %}
-                {% if subreviews is not empty %}
-                    <ul class="media-list">
-                        {% for subreview in subreviews %}
-                            <li class="media panel panel-default review">
-                                <div class="media-left media-top">
-                                    <a href="#">
-                                        <img class="media-object" src="{{ gravatar(subreview.author.email, 64, 'g') }}"
-                                             alt="{{ subreview.author.username }}">
-                                    </a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading">{{ subreview.author.username }}
-                                        <small>{{ review.getDateCreate }}</small>
-                                    </h4>
-                                    <p>{{ subreview.text }}</p>
-                                </div>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </li>
+            {{ _self.review(review) }}
         {% endfor %}
     </ul>
+{% endmacro %}
+
+{% macro review(data) %}
+    <li class="media panel panel-default review">
+        {{ _self.review_body(data) }}
+        {{ _self.subreviews(data.reviews) }}
+        {{ _self.send_commentary(data.publication, 'publication', data.id) }}
+    </li>
+{% endmacro %}
+
+{% macro subreviews(data) %}
+        <ul class="media-list" id="subreviews">
+        {% for subreview in data %}
+            {{ _self.subreview(subreview) }}
+        {% endfor %}
+        </ul>
+{% endmacro %}
+
+{% macro subreview(data) %}
+        <li class="media panel panel-default review">
+            {{ _self.review_body(data) }}
+        </li>
+{% endmacro %}
+
+{% macro review_body(data) %}
+    <div class="media-left media-top">
+        <a href="#">
+            <img class="media-object" src="{{ gravatar(data.author.email, 64, 'g') }}"
+                 alt="{{ data.author.username }}">
+        </a>
+    </div>
+    <div class="media-body">
+        <h4 class="media-heading">{{ data.author.username }}
+            <small>{{ data.getDateCreate }}</small>
+        </h4>
+        <p>{{ data.text }}</p>
+    </div>
+{% endmacro %}
+
+{% macro send_commentary(data, type, reviewId) %}
+    <div class="container-fluid" id="commentary">
+        <div class="form-group">
+            <label for="comment">Review:</label>
+            <textarea class="form-control" rows="5" id="comment" placeholder="Enter your text..."></textarea>
+        </div>
+        <div class="form-group">
+            <input type="submit" id="_submit" name="_submit" data-loading-text="Loading..." value="{{ 'trans.send.commentary'|trans }}"
+                   class="btn btn-primary btn-bottom submit"/>
+        </div>
+    </div>
+    <script type="application/javascript">
+        $('.submit').unbind('click');
+        $('.submit').on('click', function(){
+            var block = $(this).parent().parent();
+            var $btn = $(this).button('loading');
+            var data = block.find('#comment').val();
+            var id = {{ data.id }};
+            var type = '{{ type }}';
+            var reviewId = '{{ reviewId }}';
+            var reviewsElementId = $.isNumeric(reviewId)?'subreviews':'reviews';
+            PubLeash.makeApiCall('review', 'add', [id, type, reviewId, data], function(data) {
+                if(data.code == 200) {
+                    block.parent().find('#' + reviewsElementId).append($.parseHTML(data.data.rendered_review));
+                    if(!$.isNumeric(reviewId)) {
+                        block.fadeOut('medium', function () {
+                            block.remove();
+                        });
+                    }
+                    block.find('#comment').val('');
+                    $btn.button('reset');
+                } else {
+
+                }
+            })
+        })
+    </script>
 {% endmacro %}

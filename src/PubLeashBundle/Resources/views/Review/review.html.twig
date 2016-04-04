@@ -1,0 +1,8 @@
+{% trans_default_domain 'PubLeashBundle' %}
+{% import '@PubLeash/layout.html.twig' as layout %}
+
+{% if type == 'review' %}
+    {{ layout.review(data) }}
+{% else %}
+    {{ layout.subreview(data) }}
+{% endif %}

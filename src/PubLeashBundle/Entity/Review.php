@@ -70,9 +70,9 @@ class Review
 
     /**
      * @var
-     * @ORM\Column(name="is_hidden", type="boolean")
+     * @ORM\Column(name="is_hidden", type="boolean", options={"default": false})
      */
-    protected $isHidden;
+    protected $isHidden = false;
 
     /**
      * @return int
