@@ -9,13 +9,10 @@
 namespace PubLeashBundle\Service;
 
 
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Query\Expr\OrderBy;
-use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use PubLeashBundle\Entity\User;
+use PubLeashBundle\Entity;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class Publication
@@ -31,14 +28,21 @@ class Publication
     private $tokenStorage;
 
     /**
+     * @var ApiRating;
+     */
+    private $apiRatingService;
+
+    /**
      * Publication constructor.
      * @param EntityManager $em
      * @param TokenStorageInterface $tokenStorage
+     * @param ApiRating $apiRating
      */
-    public function __construct(EntityManager $em, TokenStorageInterface $tokenStorage)
+    public function __construct(EntityManager $em, TokenStorageInterface $tokenStorage, ApiRating $apiRating)
     {
         $this->em = $em;
         $this->tokenStorage = $tokenStorage;
+        $this->apiRatingService = $apiRating;
     }
 
     /**
@@ -70,6 +74,11 @@ class Publication
         return true;
     }
 
+    public function userIsOwnerByPublicationId($publicationId, $authorized = true) {
+        $publication = $this->em->getRepository(Entity\Publication::class)->find($publicationId);
+        return $this->userIsOwner($publication, $authorized);
+    }
+
     public function userIsOwner(\PubLeashBundle\Entity\Publication $publication, $authorized = true) {
         if($user = $this->getUser()){
             return $publication->getOwners($authorized)->contains($user) || $publication->getAuthors()->contains($user);
@@ -77,12 +86,22 @@ class Publication
         return false;
     }
 
+    public function hasUserRatedByPublicationId($publicationId) {
+        $publication = $this->em->getRepository(Entity\Publication::class)->find($publicationId);
+        return $this->hasUserRated($publication);
+    }
+
+    public function hasUserRated(\PubLeashBundle\Entity\Publication $publication) {
+        $user = $this->getUser();
+        return $this->apiRatingService->getRating($user, $publication) != null;
+    }
+
     /**
-     * @return null|User
+     * @return null|Entity\User
      */
     protected function getUser() {
         $user = $this->tokenStorage->getToken()->getUser();
-        return ($user instanceof User)?$user:null;
+        return ($user instanceof Entity\User)?$user:null;
     }
 
     /**

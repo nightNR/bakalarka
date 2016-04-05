@@ -65,11 +65,11 @@
     <a class="rating" data-toggle="modal" data-target=".bs-modal-sm">
         {% for i in 1..5 %}
             {% if rank >= 1 %}
-                <i class="glyphicon glyphicon-star star-color"></i>
+                <i class="glyphicon glyphicon-star star-color" data-my-id="{{ i }}"></i>
             {% elseif rank > 0 %}
-                <i class="glyphicon glyphicon-star-half glyphicon-star-empty star-color"></i>
+                <i class="glyphicon glyphicon-star-empty star-color" data-my-id="{{ i }}"></i>
             {% else %}
-                <i class="glyphicon glyphicon-star-empty star-color-empty"></i>
+                <i class="glyphicon glyphicon-star-empty star-color-empty" data-my-id="{{ i }}"></i>
             {% endif %}
             {% set rank = (rank - 1) %}
         {% endfor %}
@@ -81,19 +81,83 @@
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Rate this publication</h4>
                 </div>
                 <div class="modal-body text-center">
-                    {% for i in 1..5 %}
-                            <i class="glyphicon glyphicon-star-empty star-color-empty star-select" style="font-size: 40px" data-my-id="{{ i }}"></i>
-                    {% endfor %}
+                    {% if not publication_service.userIsOwnerByPublicationId(publicationId) %}
+                        <p>{{ 'trans.rating_not_alowed' | trans }}</p>
+                    {% elseif not publication_service.hasUserRatedByPublicationId(publicationId) %}
+                        {% for i in 1..5 %}
+                            <i class="glyphicon glyphicon-star-empty star-color-empty star-select"
+                               style="font-size: 40px" data-my-id="{{ i }}"></i>
+                        {% endfor %}
+                    {% else %}
+                        <p>{{ 'trans.already_rated' | trans }}</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
     <script type="application/javascript">
+        $('.star-select').on('mouseover', function () {
+            var id = $(this).attr('data-my-id');
+            $(this).parent().find('i').each(function () {
+                if ($(this).attr('data-my-id') <= id) {
+                    $(this).removeClass('glyphicon-star-empty').removeClass('star-color-empty').addClass('glyphicon-star').addClass('star-color');
+                }
+            })
+        });
+        $('.star-select').on('mouseout', function () {
+            var id = $(this).attr('data-my-id');
+            $(this).parent().find('i').each(function () {
+                if ($(this).attr('data-my-id') <= id) {
+                    $(this).removeClass('glyphicon-star').removeClass('star-color').addClass('star-color-empty').addClass('glyphicon-star-empty');
+                }
+            })
+        });
 
+        $('.star-select').on('click', function () {
+            PubLeash.makeApiCall('rating', 'add', [$(this).attr('data-my-id'), {{ publicationId }}], function (data) {
+                if (data.code == 200) {
+                    var rating = data.data.rating;
+                    $('.rating').find('i').each(function () {
+                        var starId = $(this).attr('data-my-id');
+                        if (rating - starId < 0) { //empty star
+                            $(this).removeClass('glyphicon-star')
+                                    .removeClass('star-color')
+                                    .removeClass('star-color-empty')
+                                    .removeClass('glyphicon-star-empty')
+                                    .addClass('star-color-empty')
+                                    .addClass('glyphicon-star-empty');
+                        } else if (rating - starId < 1 && rating - starId > 0) { //half star
+                            $(this).removeClass('glyphicon-star')
+                                    .removeClass('star-color')
+                                    .removeClass('star-color-empty')
+                                    .removeClass('glyphicon-star-empty')
+                                    .addClass('star-color')
+                                    .addClass('glyphicon-star-empty');
+                        } else {//full star
+                            $(this).removeClass('glyphicon-star')
+                                    .removeClass('star-color')
+                                    .removeClass('star-color-empty')
+                                    .removeClass('glyphicon-star-empty')
+                                    .addClass('glyphicon-star')
+                                    .addClass('star-color');
+                        }
+                    });
+                    $('.bs-modal-sm .modal-body').find('i').each(function () {
+                        $(this).fadeOut('fast');
+                    })
+                    var text = $(document.createElement('p')).text(data.data.rated_message).hide();
+                    $('.bs-modal-sm .modal-body').append(text);
+                    $(text).fadeIn('fast');
+                    $('.bs-modal-sm').modal('hide');
+                    PubLeash.addFlashMessage('alert-success', data.message);
+                }
+            })
+        })
     </script>
 {% endmacro %}
 

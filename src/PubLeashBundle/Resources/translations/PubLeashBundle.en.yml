@@ -18,6 +18,8 @@ trans:
     comment: 'Comment'
     comment_reply: 'Reply'
 
+  already_rated: 'You have already rated this publication.'
+  rating_not_alowed: 'You are not alowed to rate this publication.'
 publication:
   title: 'Title'
   description: 'Description'

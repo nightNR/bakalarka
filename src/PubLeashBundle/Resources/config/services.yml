@@ -54,6 +54,12 @@ services:
           tags:
             - { name: api.service }
 
+  api_rating:
+            class: PubLeashBundle\Service\ApiRating
+            arguments: ['@doctrine.orm.default_entity_manager']
+            tags:
+              - { name: api.service }
+
   api_review:
             class: PubLeashBundle\Service\ApiReview
             arguments: ['@twig', '@doctrine.orm.default_entity_manager']
