@@ -10,8 +10,7 @@ namespace PubLeashBundle\Service;
 
 
 use Doctrine\ORM\EntityManager;
-use PubLeashBundle\Entity\Publication;
-use PubLeashBundle\Entity\PublicationXAuthor;
+use PubLeashBundle\Entity;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class ApiPublication extends AbstractApiService
@@ -25,7 +24,7 @@ class ApiPublication extends AbstractApiService
         if(($user = $this->getUser()) === null) {
             return ['message' => 'User need to be logged in', 'code' => 400];
         }
-        if(($publication = $this->em->getRepository(Publication::class)->find($publicationId)) === null) {
+        if(($publication = $this->em->getRepository(Entity\Publication::class)->find($publicationId)) === null) {
             return ['message' => 'Publication with ID '. $publicationId . 'does not exist.', 'code' => 400];
         }
         $user->addPublicationToLibrary($publication);
@@ -37,11 +36,11 @@ class ApiPublication extends AbstractApiService
         if(($user = $this->getUser()) === null) {
             return ['message' => 'User need to be logged in', 'code' => 400];
         }
-        if(($publication = $this->em->getRepository(Publication::class)->find($publicationId)) === null) {
+        if(($publication = $this->em->getRepository(Entity\Publication::class)->find($publicationId)) === null) {
             return ['message' => 'Publication with ID '. $publicationId . 'does not exist.', 'code' => 400];
         }
 
-        if(($authorship = $this->em->getRepository(PublicationXAuthor::class)->find(['publication' => $publication, 'user' => $user])) === null) {
+        if(($authorship = $this->em->getRepository(Entity\PublicationXAuthor::class)->find(['publication' => $publication, 'user' => $user])) === null) {
             return ['message' => 'Authorship between user '.$user->getUsername().' and publication '. $publication->getTitle() . 'does not exist.', 'code' => 400];
         }
 

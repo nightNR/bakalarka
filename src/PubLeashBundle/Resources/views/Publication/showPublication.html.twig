@@ -148,6 +148,9 @@
                     <h3>{{ 'publication.reviews'|trans }}</h3>
                 </div>
                 {{ layout.reviews(publication.reviews) }}
+                {% if publication_service.allowedToWriteReview(publication) %}
+                    {{ layout.send_commentary(publication, 'publication', 'null') }}
+                {% endif %}
             {% endif %}
         </div>
     </div>
