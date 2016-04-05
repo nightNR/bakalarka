@@ -15,7 +15,8 @@ trans:
     publication: 'Read Publication'
   notifications: 'Notifications'
   send:
-    commentary: 'Send commentary'
+    comment: 'Comment'
+    comment_reply: 'Reply'
 
 publication:
   title: 'Title'

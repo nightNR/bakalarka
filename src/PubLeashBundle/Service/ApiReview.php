@@ -58,6 +58,7 @@ class ApiReview extends AbstractApiService
         $review->setReview($referencedReview);
 
         $this->em->persist($review);
+        $this->em->flush();
 
         return [
             'message' => 'Review has been added successfully.',

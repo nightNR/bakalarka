@@ -465,11 +465,13 @@ class Publication
         return $this->ownedBy;
     }
 
-    public function getOwners() {
+    public function getOwners($authorizedOnly = true) {
         $ret = new ArrayCollection();
         /** @var LibraryEntry $ownerLibraryEntry */
         foreach($this->getOwnedBy() as $ownerLibraryEntry) {
-            $ret->add($ownerLibraryEntry->getUser());
+            if(!$authorizedOnly || $ownerLibraryEntry->getIsAuthorized()){
+                $ret->add($ownerLibraryEntry->getUser());
+            }
         }
         return $ret;
     }

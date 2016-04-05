@@ -34,7 +34,7 @@
                     </a>
                 </li>
             {% endif %}
-            {% if not publication_service.userIsOwner(publication) %}
+            {% if not publication_service.userIsOwner(publication, false) %}
                 <li data-toggle="tooltip" data-placement="right" title="Add to library">
                     <a role="button" id="add-to-library-action" data-publication-id="{{ publication.id }}"><i class="glyphicon glyphicon-download-alt"></i>
                     </a>
@@ -73,7 +73,6 @@
             $('#add-to-library-action').on('click', function() {
                 var publicationId = $('#add-to-library-action').attr('data-publication-id');
                 PubLeash.makeApiCall('publication', 'add_to_library', [publicationId], function(data) {
-                    console.log(data);
                     if(data.code == 200) {
                         $('#add-to-library-action').parent().remove();
                         PubLeash.addFlashMessage('alert-success', data.message);
@@ -127,7 +126,13 @@
                         {% for chapter in chapters %}
                             {% if chapter.isPublished or publication_service.allowedEdit(publication) or publication_service.allowedDelete(publication) %}
                             <div class="bs-callout bs-callout-info"
-                                 onclick="location.href='{{ path('publeash_publication_showpublicationchapter', { "publicationId": publication.id, "chapterId": chapter.id }) }}'">
+                                 onclick="
+                                         {% if publication_service.userIsOwner(publication) %}
+                                            location.href='{{ path('publeash_publication_showpublicationchapter', { "publicationId": publication.id, "chapterId": chapter.id }) }}';
+                                         {% else %}
+                                             javascript:void();
+                                         {% endif %}
+                                         ">
                                 <div class="page-header">
                                     <h3>{{ chapter.title }}
                                 </div>
@@ -148,9 +153,10 @@
                     <h3>{{ 'publication.reviews'|trans }}</h3>
                 </div>
                 {{ layout.reviews(publication.reviews) }}
-                {% if publication_service.allowedToWriteReview(publication) %}
-                    {{ layout.send_commentary(publication, 'publication', 'null') }}
-                {% endif %}
+                {#{% if review_service.allowedToWriteReview(publication) %}#}
+                    {#{{ layout.send_commentary() }}#}
+                {#{% endif %}#}
+                {{ layout.send_commentary_script(publication, 'publication') }}
             {% endif %}
         </div>
     </div>
@@ -172,4 +178,5 @@
             </div>
         </div>
     </div>
+    {{ layout.stars_script(publication.id) }}
 {% endblock %}

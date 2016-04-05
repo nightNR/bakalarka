@@ -9,6 +9,7 @@
 namespace PubLeashBundle\Service;
 
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use PubLeashBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -37,15 +38,11 @@ class Review
     }
 
 
-    /**
-     * @param \PubLeashBundle\Entity\Publication $publication
-     * @return bool
-     */
-    public function isAllowedPostReview(\PubLeashBundle\Entity\Publication $publication) {
-        if($user = $this->getUser()){
-            return !$publication->getAuthors()->contains($user);
-        }
-        return false;
+    public function isAllowedToWriteReview(\PubLeashBundle\Entity\Chapter $chapter) {
+        $user = $this->getUser();
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('author', $user));
+        return $chapter->getPublication()->getAuthors()->contains($user) || ( $chapter->getPublication()->getOwners()->contains($user)
+            && $chapter->getReviews()->matching($criteria)->isEmpty());
     }
 
     /**
@@ -53,9 +50,9 @@ class Review
      * @param \PubLeashBundle\Entity\Review $review
      * @return bool
      */
-    public function isAllowedReplyReview(\PubLeashBundle\Entity\Publication $publication, \PubLeashBundle\Entity\Review $review) {
+    public function isAllowedReplyReview(\PubLeashBundle\Entity\Review $review) {
         if($user = $this->getUser()){
-            return $publication->getAuthors()->contains($user) || $review->getAuthor() == $user;
+            return $review->getPublication()->getAuthors()->contains($user) || $review->getAuthor() == $user;
         }
         return false;
     }

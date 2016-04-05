@@ -70,17 +70,11 @@ class Publication
         return true;
     }
 
-    public function userIsOwner(\PubLeashBundle\Entity\Publication $publication) {
+    public function userIsOwner(\PubLeashBundle\Entity\Publication $publication, $authorized = true) {
         if($user = $this->getUser()){
-            return $publication->getOwners()->contains($user) || $publication->getAuthors()->contains($user);
+            return $publication->getOwners($authorized)->contains($user) || $publication->getAuthors()->contains($user);
         }
         return false;
-    }
-
-    public function isAllowedToWriteReview(\PubLeashBundle\Entity\Publication $publication) {
-        $user = $this->getUser();
-        $criteria = Criteria::create()->where(Criteria::expr()->eq('author', $user));
-        return $publication->getAuthors()->contains($user) || ( $publication->getOwners()->contains($user) && $publication->getReviews()->matching($criteria)->isEmpty());
     }
 
     /**

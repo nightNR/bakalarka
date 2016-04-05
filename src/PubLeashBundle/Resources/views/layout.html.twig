@@ -62,16 +62,39 @@
 </html>
 
 {% macro stars(rank) %}
-    {% for i in 1..5 %}
-        {% if rank >= 1 %}
-            <i class="glyphicon glyphicon-star star-color"></i>
-        {% elseif rank > 0 %}
-            <i class="glyphicon glyphicon-star-half glyphicon-star-empty star-color"></i>
-        {% else %}
-            <i class="glyphicon glyphicon-star-empty star-color-empty"></i>
-        {% endif %}
-        {% set rank = (rank - 1) %}
-    {% endfor %}
+    <a class="rating" data-toggle="modal" data-target=".bs-modal-sm">
+        {% for i in 1..5 %}
+            {% if rank >= 1 %}
+                <i class="glyphicon glyphicon-star star-color"></i>
+            {% elseif rank > 0 %}
+                <i class="glyphicon glyphicon-star-half glyphicon-star-empty star-color"></i>
+            {% else %}
+                <i class="glyphicon glyphicon-star-empty star-color-empty"></i>
+            {% endif %}
+            {% set rank = (rank - 1) %}
+        {% endfor %}
+    </a>
+{% endmacro %}
+
+{% macro stars_script(publicationId) %}
+    <div class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Rate this publication</h4>
+                </div>
+                <div class="modal-body text-center">
+                    {% for i in 1..5 %}
+                            <i class="glyphicon glyphicon-star-empty star-color-empty star-select" style="font-size: 40px" data-my-id="{{ i }}"></i>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="application/javascript">
+
+    </script>
 {% endmacro %}
 
 {% macro reviews(data) %}
@@ -84,24 +107,27 @@
 
 {% macro review(data) %}
     <li class="media panel panel-default review">
+        {#{{ dump(data) }}#}
         {{ _self.review_body(data) }}
         {{ _self.subreviews(data.reviews) }}
-        {{ _self.send_commentary(data.publication, 'publication', data.id) }}
+        {% if review_service.isAllowedReplyReview(data) %}
+            {{ _self.send_commentary(data.id) }}
+        {% endif %}
     </li>
 {% endmacro %}
 
 {% macro subreviews(data) %}
-        <ul class="media-list" id="subreviews">
+    <ul class="media-list" id="subreviews">
         {% for subreview in data %}
             {{ _self.subreview(subreview) }}
         {% endfor %}
-        </ul>
+    </ul>
 {% endmacro %}
 
 {% macro subreview(data) %}
-        <li class="media panel panel-default review">
-            {{ _self.review_body(data) }}
-        </li>
+    <li class="media panel panel-default review">
+        {{ _self.review_body(data) }}
+    </li>
 {% endmacro %}
 
 {% macro review_body(data) %}
@@ -119,41 +145,59 @@
     </div>
 {% endmacro %}
 
-{% macro send_commentary(data, type, reviewId) %}
+{% macro send_commentary(reviewId) %}
     <div class="container-fluid" id="commentary">
         <div class="form-group">
             <label for="comment">Review:</label>
             <textarea class="form-control" rows="5" id="comment" placeholder="Enter your text..."></textarea>
         </div>
         <div class="form-group">
-            <input type="submit" id="_submit" name="_submit" data-loading-text="Loading..." value="{{ 'trans.send.commentary'|trans }}"
+            <input type="submit" id="_submit" name="_submit" data-loading-text="Loading..."
+                   data-review-id="{{ reviewId }}" value="
+            {% if reviewId > 0 %}
+                {{ 'trans.send.comment_reply'|trans }}
+            {% else %}
+                {{ 'trans.send.comment'|trans }}
+            {% endif %}
+            "
                    class="btn btn-primary btn-bottom submit"/>
         </div>
     </div>
-    <script type="application/javascript">
-        $('.submit').unbind('click');
-        $('.submit').on('click', function(){
-            var block = $(this).parent().parent();
-            var $btn = $(this).button('loading');
-            var data = block.find('#comment').val();
-            var id = {{ data.id }};
-            var type = '{{ type }}';
-            var reviewId = '{{ reviewId }}';
-            var reviewsElementId = $.isNumeric(reviewId)?'subreviews':'reviews';
-            PubLeash.makeApiCall('review', 'add', [id, type, reviewId, data], function(data) {
-                if(data.code == 200) {
-                    block.parent().find('#' + reviewsElementId).append($.parseHTML(data.data.rendered_review));
-                    if(!$.isNumeric(reviewId)) {
-                        block.fadeOut('medium', function () {
-                            block.remove();
-                        });
-                    }
-                    block.find('#comment').val('');
-                    $btn.button('reset');
-                } else {
+{% endmacro %}
 
-                }
+{% macro send_commentary_script(data, type) %}
+    <script type="application/javascript">
+        function bind_post_comment() {
+            $('.submit').unbind('click');
+            $('.submit').on('click', function () {
+                var block = $(this).parent().parent();
+                var $btn = $(this).button('loading');
+                var data = block.find('#comment').val();
+                var id = {{ data.id }};
+                var type = '{{ type }}';
+                var reviewId = $(this).attr('data-review-id');
+                var reviewsElementId = $.isNumeric(reviewId) ? 'subreviews' : 'reviews';
+                PubLeash.makeApiCall('review', 'add', [id, type, reviewId, data], function (data) {
+                    if (data.code == 200) {
+                        var newReview = $.parseHTML(data.data.rendered_review);
+                        $(newReview).hide();
+                        block.parent().find('#' + reviewsElementId).append(newReview);
+                        $(newReview).fadeIn('fast');
+
+                        if (!$.isNumeric(reviewId)) {
+                            block.fadeOut('medium', function () {
+                                block.remove();
+                            });
+                        }
+                        block.find('#comment').val('');
+                        $btn.button('reset');
+                        bind_post_comment();
+                    } else {
+
+                    }
+                })
             })
-        })
+        }
+        bind_post_comment();
     </script>
 {% endmacro %}

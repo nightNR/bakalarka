@@ -43,6 +43,9 @@ twig:
     form_themes:
           - 'PubLeashBundle:Form:bootstrap3-form-types.html.twig'
 #           - 'bootstrap_3_layout.html.twig'
+    globals:
+      publication_service: '@publication'
+      review_service: '@review'
 # Doctrine Configuration
 doctrine:
     dbal:

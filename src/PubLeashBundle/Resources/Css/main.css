@@ -247,3 +247,13 @@ h3 .glyphicon {
     background: #0088cc;
     box-shadow: none;
 }
+
+.rating:hover {
+    border: none;
+    text-decoration: none;
+
+}
+
+.rating {
+    cursor: pointer;
+}

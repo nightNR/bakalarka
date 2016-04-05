@@ -9,9 +9,9 @@ if(!window.PubLeash) {
             PubLeash.notificationAjax();
             (function(){
                 // do some stuff
-                setTimeout(function() {
+                setInterval(function() {
                     PubLeash.notificationAjax()
-                }, 5000);
+                }, 10000);
             })();
         },
 
@@ -21,6 +21,7 @@ if(!window.PubLeash) {
                     //console.log(item);
                     $('#'+ item).text(data[item]);
                 }
+                //PubLeash.notifications();
             })
         },
 
