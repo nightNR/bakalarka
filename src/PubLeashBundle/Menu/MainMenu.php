@@ -99,7 +99,7 @@ class MainMenu implements ContainerAwareInterface
         $menu = $factory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav navbar-nav navbar-left');
 
-        $menu->addChild('trans.home', array('route' => 'publeash_default_index'));
+//        $menu->addChild('trans.home', array('route' => 'publeash_default_index'));
 
         $menu->addChild('trans.books',
             [
@@ -111,23 +111,23 @@ class MainMenu implements ContainerAwareInterface
 
         return $menu;
     }
-
-    public function mainMenuRight(FactoryInterface $factory, array $options)
-    {
-        /**
-         * @var Translator $translator
-         */
-        $translator = $this->container->get('translator');
-        $menu = $factory->createItem('root');
-
-        $menu->addChild('trans.login', array('route' => 'publeash_default_index'))->setLabel($translator->trans('trans.home', [], 'PubLeashBundle'));
-
-        $menu->addChild('trans.books', array('route' => 'publeash_default_index'))->setLabel($translator->trans('trans.books', [], 'PubLeashBundle'));
-        $menu['trans.books']->addCHild('trans.books_browse', array('route' => 'publeash_default_index'))->setLabel($translator->trans('trans.books_browse', [], 'PubLeashBundle'));
-        $menu['trans.books']->addCHild('trans.books_add', array('route' => 'publeash_default_index'))->setLabel($translator->trans('trans.books_add', [], 'PubLeashBundle'));
-
-        $menu->addChild('trans.library', array('route' => 'publeash_default_index'))->setLabel($translator->trans('trans.library', [], 'PubLeashBundle'));
-
-        return $menu;
-    }
+//
+//    public function mainMenuRight(FactoryInterface $factory, array $options)
+//    {
+//        /**
+//         * @var Translator $translator
+//         */
+//        $translator = $this->container->get('translator');
+//        $menu = $factory->createItem('root');
+//
+//        $menu->addChild('trans.login', array('route' => 'publeash_default_index'))->setLabel($translator->trans('trans.home', [], 'PubLeashBundle'));
+//
+//        $menu->addChild('trans.books', array('route' => 'publeash_default_index'))->setLabel($translator->trans('trans.books', [], 'PubLeashBundle'));
+//        $menu['trans.books']->addCHild('trans.books_browse', array('route' => 'publeash_default_index'))->setLabel($translator->trans('trans.books_browse', [], 'PubLeashBundle'));
+//        $menu['trans.books']->addCHild('trans.books_add', array('route' => 'publeash_default_index'))->setLabel($translator->trans('trans.books_add', [], 'PubLeashBundle'));
+//
+//        $menu->addChild('trans.library', array('route' => 'publeash_default_index'))->setLabel($translator->trans('trans.library', [], 'PubLeashBundle'));
+//
+//        return $menu;
+//    }
 }

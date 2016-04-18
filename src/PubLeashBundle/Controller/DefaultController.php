@@ -20,30 +20,20 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-
-        /**
-         * @var GeoIP $geoIp
-         */
-        $geoIp = $this->get('geoip');
-        try {
-//            dump($geoIp->getCountry());
-        }catch(AddressNotFoundException $e){
-//            dump($e);
-        }
-        return [];
+        return $this->redirectToRoute('publeash_publication_publication');
     }
 
-    /**
-     * @Route("/admin")
-     */
-    public function adminAction()
-    {
-        $p1 = new Process('cd /home/night/bakalarka/ && git pull origin master');
-        $p1->run();
-	if (!$p1->isSuccessful()) {
-    		throw new ProcessFailedException($p1);
-	}
-        echo $p1->getOutput();
-        return new Response();
-    }
+//    /**
+//     * @Route("/admin")
+//     */
+//    public function adminAction()
+//    {
+//        $p1 = new Process('cd /home/night/bakalarka/ && git pull origin master');
+//        $p1->run();
+//	if (!$p1->isSuccessful()) {
+//    		throw new ProcessFailedException($p1);
+//	}
+//        echo $p1->getOutput();
+//        return new Response();
+//    }
 }

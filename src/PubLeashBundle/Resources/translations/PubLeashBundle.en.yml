@@ -9,7 +9,7 @@ user:
 trans:
   home: 'Home'
   books: 'Browse Books'
-  library: 'My Books'
+  library: 'My Library'
   edit: 'Edit Publication'
   read:
     publication: 'Read Publication'
@@ -19,7 +19,7 @@ trans:
     comment_reply: 'Reply'
 
   already_rated: 'You have already rated this publication.'
-  rating_not_alowed: 'You are not alowed to rate this publication.'
+  rating_not_alowed: 'You are not allowed to rate this publication.'
 publication:
   title: 'Title'
   description: 'Description'
