@@ -9,3 +9,8 @@ services:
         tags:
             - { name: form.type, alias: app_user_registration }
         arguments: [PubLeashBundle\Entity\User]
+    app.form.profile:
+            class: UserBundle\Form\Type\ProfileFormType
+            tags:
+                - { name: form.type, alias: app_user_profile }
+            arguments: [PubLeashBundle\Entity\User]

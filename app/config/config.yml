@@ -88,6 +88,9 @@ fos_user:
         enabled: true
       form:
         type: UserBundle\Form\Type\RegistrationFormType
+    profile:
+      form:
+        type: UserBundle\Form\Type\ProfileFormType
 
 assetic:
     debug:          '%kernel.debug%'

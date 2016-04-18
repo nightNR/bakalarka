@@ -5,6 +5,8 @@ user:
   city: 'City'
   country: 'Country'
   login: 'Login'
+  email: 'Email'
+  edit_profile: 'Edit profile'
 
 trans:
   home: 'Home'
