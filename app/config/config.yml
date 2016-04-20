@@ -155,7 +155,7 @@ knp_menu:
 
 
 kms_froala_editor:
-    language: "en"
+    language: "en_gb"
     height: 500
     pluginsDisabled: [ "save" ]
     includeFontAwesome: false
