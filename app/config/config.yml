@@ -158,3 +158,4 @@ kms_froala_editor:
     language: "en"
     height: 500
     pluginsDisabled: [ "save" ]
+    includeFontAwesome: false
