@@ -157,6 +157,6 @@ knp_menu:
 kms_froala_editor:
     language: "en_gb"
     height: 500
-    toolbarInline: true
+    toolbarInline: false
     pluginsDisabled: [ "save" ]
     includeFontAwesome: false
